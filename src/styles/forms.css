@@ -1,0 +1,30 @@
+/* input fields styles */
+.input-base {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.input-base:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+.select-base {
+  /* color: #1c1944; */
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* Remove number input arrows – Chrome, Edge, Safari */
+.input-base[type="number"]::-webkit-inner-spin-button,
+.input-base[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove number input arrows – Firefox */
+.input-base[type="number"] {
+  -moz-appearance: textfield;
+}

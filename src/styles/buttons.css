@@ -1,0 +1,46 @@
+.btn-base {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  background-color: #4f46e5;
+  color: #ffffff;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.btn-base:hover {
+  background-color: #4338ca;
+}
+
+.btn-base:active {
+  transform: scale(0.98);
+}
+
+.btn-base:focus-visible {
+  outline: 2px solid #a5b4fc;
+  outline-offset: 2px;
+}
+
+.btn-base:disabled {
+  background-color: #c7d2fe;
+  cursor: not-allowed;
+}
+
+/* negative button */
+.btn-red {
+  background-color: crimson;
+}
+.btn-red:hover {
+  background-color: rgb(228, 66, 99);
+}
+.btn-red:focus-visible {
+  outline: 2px solid rgb(233, 119, 142);
+  outline-offset: 2px;
+}
