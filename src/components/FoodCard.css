@@ -1,0 +1,47 @@
+.meal-card {
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#7FBE8A", endColorstr="#58AA65", GradientType=1 );
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  gap: 15px;
+  box-shadow: 1px 1px 1px rgb(188, 188, 188);
+}
+.meal-title {
+  flex: 3;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* justify-content: space-around; */
+  gap: 10px;
+}
+.meal-name {
+  font-size: 19px;
+  font-weight: bold;
+  color: white;
+}
+.meal-actions {
+  padding: 10px;
+  background-color: white;
+  border-radius: 0 0 15px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.food-img {
+  width: 70px;
+}
+
+.btn-base {
+  width: 180px;
+  background-color: rgba(88, 170, 101);
+}
+.btn-base:hover {
+  background-color: rgb(157, 220, 168);
+}
+.btn-red {
+  background-color: crimson;
+}
