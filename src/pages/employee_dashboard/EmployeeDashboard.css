@@ -9,3 +9,36 @@
   box-sizing: border-box;
   padding: 20px;
 }
+.meals-container {
+  padding: 50px 10px;
+  border: 2px solid lightgray;
+}
+.meals-cnt-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.vote-ends-in {
+  background-color: orange;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#select-time {
+  font-size: 16px;
+  padding-inline: 10px;
+}
+.center-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-vote-cnt button {
+  --btn-bg: #4f46e5;
+  --btn-hover: #4338ca;
+  --btn-focus: #a5b4fc;
+}
