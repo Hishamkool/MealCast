@@ -1,47 +1,111 @@
 .meal-card {
-  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#7FBE8A", endColorstr="#58AA65", GradientType=1 );
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  width: max-content;
-  gap: 15px;
+  min-width: 200px;
+  max-width: 260px;
+  /* gap: 10px; */
   box-shadow: 1px 1px 1px rgb(188, 188, 188);
+  background-color: white;
+}
+.meal-title-cnt {
+  flex: 3;
+  border-radius: 15px 15px 0 0;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
 }
 .meal-title {
-  flex: 3;
-  padding: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* justify-content: space-around; */
+  justify-content: center;
   gap: 10px;
+  /* justify-content: space-evenly; */
+}
+
+.variant {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 16px;
+}
+
+.meal-indicator {
+  display: inline-block;
+  width: 14px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+.meal-indicator.veg {
+  background-color: #16a34a;
+}
+
+.meal-indicator.non-veg {
+  background-color: #dc2626;
 }
 .meal-name {
   font-size: 19px;
   font-weight: bold;
   color: white;
 }
+
 .meal-actions {
   padding: 10px;
   background-color: white;
   border-radius: 0 0 15px 15px;
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 10px;
   align-items: center;
 }
 
+/* count buttons */
+.count-cnt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-evenly;
+  width: 100%;
+}
+.count-btn {
+  width: max-content !important;
+  font-size: 20px;
+  border-radius: 15px;
+  --btn-bg: #16a34a;
+  --btn-hover: #15803d;
+  --btn-focus: #86efac;
+}
+.count-value {
+  color: black;
+  font-size: large;
+}
 .food-img {
   width: 70px;
 }
 
 .btn-base {
   width: 180px;
-  background-color: rgba(88, 170, 101);
 }
-.btn-base:hover {
-  background-color: rgb(157, 220, 168);
+
+/* to overide styles locally example */
+.meal-actions .btn-positive {
+  /*  --btn-bg: #22c55e;
+  --btn-hover: #16a34a; */
 }
-.btn-red {
-  background-color: crimson;
+
+.food-card-grid {
+  padding-block: 20px;
+  justify-items: center;
+  justify-content: start;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
