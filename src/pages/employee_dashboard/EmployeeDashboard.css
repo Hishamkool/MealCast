@@ -9,9 +9,15 @@
   box-sizing: border-box;
   padding: 20px;
 }
+.title {
+  display: flex;
+  justify-content: space-between;
+}
+.logout {
+  width: 90px;
+}
 .meals-container {
   padding: 50px 10px;
-  border: 2px solid lightgray;
 }
 .meals-cnt-title {
   display: flex;
