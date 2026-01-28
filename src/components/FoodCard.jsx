@@ -1,19 +1,22 @@
 import "./FoodCard.css";
-import {
-  GRADIENT_VEG,
-  GRADIENT_NONVEG,
-  GRADIENT_TINT,
-} from "../constants/colors";
+import { GRADIENT_TINT } from "../constants/colors";
 import { useState } from "react";
 
-function FoodCard({ meal }) {
+function FoodCard({ meal, onAction, isSelected, disabled }) {
   const [count, setCount] = useState(1);
 
   if (!meal) {
     return;
   }
   return (
-    <div className="meal-card">
+    <div
+      className={`meal-card 
+        ${isSelected ? "selected" : ""} 
+        ${disabled ? "disabled" : ""}`}
+      onClick={() => {
+        onAction(meal, count);
+      }}
+    >
       <div
         className="meal-title-cnt"
         style={{
@@ -45,20 +48,35 @@ function FoodCard({ meal }) {
           <div className="count-cnt">
             <button
               className="btn-base count-btn"
-              onClick={() => setCount((previous) => Math.max(previous - 1, 1))}
+              onClick={(e) => {
+                e.stopPropagation(); // prevent card click
+                const newCount = Math.max(count - 1, 1);
+                setCount(newCount);
+                onAction(meal, newCount);
+              }}
             >
               -
             </button>
             <span className="count-value">{count}</span>
             <button
               className="btn-base count-btn"
-              onClick={() => setCount((previous) => previous + 1)}
+              onClick={(e) => {
+                e.stopPropagation(); // prevent card click
+                const newCount = count + 1;
+                setCount(newCount);
+                onAction(meal, newCount);
+              }}
             >
               +
             </button>
           </div>
         )}
-        <button className="btn-base btn-positive">Add item</button>
+        <button
+          className={`btn-base btn-positive ${isSelected ? "btn-selected" : ""}`}
+          onClick={() => onAction(meal, count)}
+        >
+          {isSelected ? "Selected" : "Select item"}
+        </button>
       </div>
     </div>
   );

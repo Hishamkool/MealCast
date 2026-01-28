@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../routes/routes.js";
 import { useAuth } from "../../context/AuthContext.jsx";
@@ -6,16 +6,21 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import "./Login.css";
 import "../../styles/forms.css";
 import "../../styles/buttons.css";
+import { SnackBarContext } from "../../context/SnackBarContext.jsx";
 function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
-
   const [role, setRole] = useState("");
   const { login } = useAuth();
+  const { showSnackBar, variant } = useContext(SnackBarContext);
 
   function handleLogin() {
+    if (!username) {
+      showSnackBar("Please enter you username", "error");
+      return;
+    }
     if (!role) {
-      alert("Please select a valid role");
+      showSnackBar("Please select a valid role");
       return;
     }
     login(username, role);

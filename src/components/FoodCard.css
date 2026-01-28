@@ -2,11 +2,21 @@
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  min-width: 200px;
-  max-width: 260px;
+  width: 200px;
   /* gap: 10px; */
   box-shadow: 1px 1px 1px rgb(188, 188, 188);
   background-color: white;
+}
+.meal-card.selected {
+  border: 1px solid green;
+  box-shadow: 0 0 50px 10px #48abe0;
+}
+/* meal card disabled */
+.meal-card.disabled {
+  opacity: 0.4;
+  filter: grayscale(1);
+  pointer-events: none;
+  cursor: not-allowed;
 }
 .meal-title-cnt {
   flex: 3;
@@ -22,7 +32,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   gap: 10px;
   /* justify-content: space-evenly; */
 }
@@ -53,6 +63,9 @@
   font-size: 19px;
   font-weight: bold;
   color: white;
+  overflow-wrap: break-word;
+  /* word-break: break-all; */
+  /* text-align: center; */
 }
 
 .meal-actions {
@@ -93,7 +106,9 @@
 .btn-base {
   width: 180px;
 }
-
+.btn-base.btn-selected {
+  --btn-bg: #15803d;
+}
 /* to overide styles locally example */
 .meal-actions .btn-positive {
   /*  --btn-bg: #22c55e;
