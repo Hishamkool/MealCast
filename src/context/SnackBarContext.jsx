@@ -2,11 +2,11 @@ import React, { createContext, useState, useRef } from "react";
 export const SnackBarContext = createContext();
 
 function SnackBarProvider({ children }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   //   for fade out animation
   const [exiting, setExiting] = useState(false);
-  const [msg, setMsg] = useState("Test message");
-  const [variant, setVariant] = useState("success");
+  const [msg, setMsg] = useState("");
+  const [variant, setVariant] = useState("");
   //   timer reference to cancel previous timeout else new snackbar will close fast
   const timeId = useRef(null);
   //   to add key to snack bar to let react know every new snackbar clicks for enter animation
@@ -26,10 +26,10 @@ function SnackBarProvider({ children }) {
     setSackId(Date.now()); // new id when showSnackbar
     timeId.current = setTimeout(() => {
       setExiting(true);
-      //   animation duration for exit
+
       setTimeout(() => {
         setOpen(false);
-      }, 250);
+      }, 250); //   animation duration for exit 250ms
     }, 3000);
   };
 
