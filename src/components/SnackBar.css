@@ -2,19 +2,63 @@
   position: fixed;
   bottom: 30px;
   left: 50%;
-  transform: translateX(-50%);
-  color: #fff;
+
   padding: 12px 20px;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 16px;
   z-index: 9999;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fbf9f7;
 }
-
-.snackbar.default {
-  background-color: #323232;
-  color: black !important;
+.snackbar.success {
+  background-color: #24864f;
 }
 .snackbar.error {
-  background-color: rgb(134, 25, 25);
+  background-color: #d93a52;
+}
+.snackbar.warning {
+  background-color: #fdb022;
+}
+.snackbar.default {
+  background-color: #323337;
+}
+
+.snackbar-icon {
+  fill: #fbf9f7;
+}
+
+/* animations */
+.snackbar.enter {
+  animation: bounceInBottom 0.3s ease-in forwards;
+}
+.snackbar.exit {
+  animation: fadeDown 0.025s ease-in forwards;
+}
+@keyframes bounceInBottom {
+  0% {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -20%);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(-50%, 5%);
+  }
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
+@keyframes fadeDown {
+  from {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, 20px);
+  }
 }

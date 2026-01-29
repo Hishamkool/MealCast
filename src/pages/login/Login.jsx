@@ -20,7 +20,7 @@ function Login() {
       return;
     }
     if (!role) {
-      showSnackBar("Please select a valid role");
+      showSnackBar("Please select a valid role", "error");
       return;
     }
     login(username, role);
