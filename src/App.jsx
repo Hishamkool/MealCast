@@ -5,7 +5,7 @@ import Login from "./pages/login/Login";
 import EmployeeDashboard from "./pages/employee_dashboard/EmployeeDashboard";
 import AdminDashboard from "./pages/admin_dashboard/AdminDashboard";
 import PageNotFound from "./pages/page_not_found/PageNotFound";
-import SnackBar from "./components/SnackBar";
+import SnackBar from "./components/SnackBar/SnackBar";
 
 function App() {
   return (

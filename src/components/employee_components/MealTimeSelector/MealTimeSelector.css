@@ -1,0 +1,43 @@
+.meal-time-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.meal-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-primary);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.meal-btn:hover {
+  background: #f3f4f6;
+}
+
+.meal-btn.active {
+  background: var(--btn-bg);
+  color: white;
+  font-weight: bold;
+  border-color: var(--btn-focus);
+}
+
+.icon {
+  font-size: 18px;
+}
+.meal-icon {
+  width: 25px;
+  height: 25px;
+  aspect-ratio: 1/1;
+}
+.meal-btn.active .meal-icon {
+  fill: white;
+  color: white;
+}

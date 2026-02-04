@@ -1,50 +1,16 @@
-* {
-  padding: 0;
-  margin: 0;
-}
-
 .employee-dash {
-  background-color: rgb(231, 231, 231);
+  /* background-color: rgb(231, 231, 231); */
   min-height: 100vh;
   box-sizing: border-box;
   padding: 20px;
-}
-.title {
-  display: flex;
-  justify-content: space-between;
-}
-.logout {
-  width: 90px;
-}
-.meals-container {
-  padding: 50px 10px;
-}
-.meals-cnt-title {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
-.vote-ends-in {
-  background-color: orange;
-  padding: 15px;
-  border-radius: 10px;
+  padding-bottom: calc(50px + 24px);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 15px;
 }
-#select-time {
-  font-size: 16px;
-  padding-inline: 10px;
-}
+
 .center-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.submit-vote-cnt button {
-  --btn-bg: #4f46e5;
-  --btn-hover: #4338ca;
-  --btn-focus: #a5b4fc;
 }

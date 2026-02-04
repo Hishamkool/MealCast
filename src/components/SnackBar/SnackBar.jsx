@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 
 /* svg icons */
-import SuccessIcon from "../assets/svg/check_circle.svg?react";
-import DefaultIcon from "../assets/svg/circle_notifications.svg?react";
-import ErrorIcon from "../assets/svg/error_circle.svg?react";
-import ReportIcon from "../assets/svg/report.svg?react";
-import SubmitIcon from "../assets/svg/send.svg?react";
-import TickIcon from "../assets/svg/simple_check.svg?react";
-import WarningIcon from "../assets/svg/warning.svg?react";
+import SuccessIcon from "../../assets/svg/check_circle.svg?react";
+import DefaultIcon from "../../assets/svg/circle_notifications.svg?react";
+import ErrorIcon from "../../assets/svg/error_circle.svg?react";
+import ReportIcon from "../../assets/svg/report.svg?react";
+import SubmitIcon from "../../assets/svg/send.svg?react";
+import TickIcon from "../../assets/svg/simple_check.svg?react";
+import WarningIcon from "../../assets/svg/warning.svg?react";
 
-import { SnackBarContext } from "../context/SnackBarContext";
+import { SnackBarContext } from "../../context/SnackBarContext";
 import "./SnackBar.css";
 
 function SnackBar() {

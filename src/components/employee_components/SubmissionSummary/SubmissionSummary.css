@@ -1,0 +1,17 @@
+.submission-summary {
+  border: 1px solid lightgray;
+  box-shadow: 1px 4px 15px lightgray;
+  padding: 19px 30px;
+  border-radius: 15px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: white;
+}
+.submission-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
