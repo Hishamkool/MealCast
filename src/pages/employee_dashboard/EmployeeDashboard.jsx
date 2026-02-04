@@ -135,18 +135,22 @@ function EmployeeDashboard() {
         /> */}
         {/* food cards */}
         <div className="food-card-grid">
-          {currentMealOption.map((meal) => (
-            <FoodCard
-              key={meal.id}
-              mealId={meal.id}
-              alreadySubmitted={alreadySubmitted}
-              optedOut={optedOut}
-              activeSubmissionId={submittedMeals[mealTime]?.meal?.id}
-              meal={meal}
-              onAction={handleMealSelection}
-              isSelected={selectedMeal?.id === meal.id}
-            />
-          ))}
+          {currentMealOption.length === 0 ? (
+            <div>No menu found for {mealTime}</div>
+          ) : (
+            currentMealOption.map((meal) => (
+              <FoodCard
+                key={meal.id}
+                mealId={meal.id}
+                alreadySubmitted={alreadySubmitted}
+                optedOut={optedOut}
+                activeSubmissionId={submittedMeals[mealTime]?.meal?.id}
+                meal={meal}
+                onAction={handleMealSelection}
+                isSelected={selectedMeal?.id === meal.id}
+              />
+            ))
+          )}
         </div>
       </div>
       <SubmissionSummary
