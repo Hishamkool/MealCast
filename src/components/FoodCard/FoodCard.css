@@ -1,9 +1,9 @@
 .meal-card {
-  border-radius: 15px;
   display: flex;
   flex-direction: column;
-  width: 200px;
-  /* gap: 10px; */
+  width: 75vw;
+  aspect-ratio: 3/4;
+  border-radius: 15px;
   box-shadow: 1px 1px 1px rgb(188, 188, 188);
   background-color: white;
 }
@@ -13,15 +13,16 @@
 }
 /* meal card disabled */
 .meal-card.disabled {
-  opacity: 0.4;
-  filter: grayscale(1);
   pointer-events: none;
   cursor: not-allowed;
 }
+.meal-card.grayedOut {
+  opacity: 0.4;
+  filter: grayscale(1);
+}
 .meal-title-cnt {
-  flex: 3;
   border-radius: 15px 15px 0 0;
-  min-height: 150px;
+  flex: 4;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -31,10 +32,6 @@
 .meal-title {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  /* justify-content: center; */
-  gap: 10px;
-  /* justify-content: space-evenly; */
 }
 
 .variant {
@@ -74,7 +71,6 @@
   border-radius: 0 0 15px 15px;
   display: flex;
   flex-direction: column;
-  flex: 1;
   gap: 10px;
   align-items: center;
 }
@@ -103,8 +99,8 @@
   width: 70px;
 }
 
-.btn-base {
-  width: 180px;
+.select-btn {
+  width: calc(100% - 5%);
 }
 .btn-base.btn-selected {
   --btn-bg: #15803d;
@@ -119,7 +115,6 @@
   padding-block: 20px;
   justify-items: center;
   justify-content: start;
-
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;

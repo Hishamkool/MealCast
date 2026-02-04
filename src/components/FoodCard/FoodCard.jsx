@@ -1,9 +1,23 @@
 import "./FoodCard.css";
-import { GRADIENT_TINT } from "../constants/colors";
+import { GRADIENT_TINT } from "../../constants/colors";
 import { useState } from "react";
 
-function FoodCard({ meal, onAction, isSelected, disabled }) {
+function FoodCard({
+  meal,
+  onAction,
+  isSelected,
+  optedOut,
+  mealId,
+  activeSubmissionId,
+  alreadySubmitted,
+}) {
   const [count, setCount] = useState(1);
+
+  // logic to disable food cards
+  const isSubmittedMeal = alreadySubmitted && activeSubmissionId === mealId; // disabled
+  const otherSubmittedMeal = alreadySubmitted && activeSubmissionId !== mealId; //grayscale
+  const isDisabled = optedOut || isSubmittedMeal || otherSubmittedMeal;
+  const isGrayedOut = optedOut || otherSubmittedMeal;
 
   if (!meal) {
     return;
@@ -12,11 +26,16 @@ function FoodCard({ meal, onAction, isSelected, disabled }) {
     <div
       className={`meal-card 
         ${isSelected ? "selected" : ""} 
-        ${disabled ? "disabled" : ""}`}
+        ${isDisabled ? "disabled" : ""}
+        ${isGrayedOut ? "grayedOut" : ""}
+        
+        `}
       onClick={() => {
+        if (isDisabled) return;
         onAction(meal, count);
       }}
     >
+      {/* ${optedOut && activeSubmission === key ? "disabled" : ""} */}
       <div
         className="meal-title-cnt"
         style={{
@@ -27,11 +46,6 @@ function FoodCard({ meal, onAction, isSelected, disabled }) {
         }}
       >
         <div className="meal-title">
-          {/* <img
-            src="/images/food_items/fast-food.png"
-            alt="ghee rice"
-            className="food-img"
-          /> */}
           <span className="meal-name">{meal.name}</span>
         </div>
 
@@ -42,14 +56,14 @@ function FoodCard({ meal, onAction, isSelected, disabled }) {
           </div>
         )}
       </div>
-
       <div className="meal-actions">
         {meal.showCount && (
           <div className="count-cnt">
             <button
               className="btn-base count-btn"
               onClick={(e) => {
-                e.stopPropagation(); // prevent card click
+                e.stopPropagation(); // prevent card click selection
+                if (isDisabled) return;
                 const newCount = Math.max(count - 1, 1);
                 setCount(newCount);
                 onAction(meal, newCount);
@@ -62,6 +76,7 @@ function FoodCard({ meal, onAction, isSelected, disabled }) {
               className="btn-base count-btn"
               onClick={(e) => {
                 e.stopPropagation(); // prevent card click
+                if (isDisabled) return;
                 const newCount = count + 1;
                 setCount(newCount);
                 onAction(meal, newCount);
@@ -72,10 +87,17 @@ function FoodCard({ meal, onAction, isSelected, disabled }) {
           </div>
         )}
         <button
-          className={`btn-base btn-positive ${isSelected ? "btn-selected" : ""}`}
-          onClick={() => onAction(meal, count)}
+          className={`select-btn btn-base btn-positive ${isSelected ? "btn-selected" : ""}`}
+          onClick={() => {
+            if (isDisabled) return;
+            onAction(meal, count);
+          }}
         >
-          {isSelected ? "Selected" : "Select item"}
+          {isSubmittedMeal
+            ? "Submitted"
+            : isSelected
+              ? "Selected"
+              : "Select item"}
         </button>
       </div>
     </div>

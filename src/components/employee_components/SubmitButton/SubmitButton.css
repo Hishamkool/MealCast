@@ -1,0 +1,16 @@
+.submit-vote-cnt button {
+  --btn-bg: #4f46e5;
+  --btn-hover: #4338ca;
+  --btn-focus: #a5b4fc;
+}
+.submit-btn {
+  position: fixed;
+  bottom: 20px;
+
+  height: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  padding-inline: 25px;
+  border: 0px solid var(--btn-focus);
+  box-shadow: 0px 17px 10px -10px rgba(0, 0, 0, 0.4);
+}

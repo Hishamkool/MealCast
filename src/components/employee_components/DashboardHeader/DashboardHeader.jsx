@@ -1,9 +1,12 @@
 import React from "react";
-
+import "./DashboardHeader.css";
 function DashboardHeader({ username, onLogout }) {
   return (
     <div className="title">
-      <h1>Hello, {username ?? "Guest"}!</h1>
+      <div>
+        <p className="welcome">Welcome back,</p>
+        <p className="user-name"> {username ?? "Guest"}!</p>
+      </div>
       <button className="btn-base logout" onClick={onLogout}>
         Logout
       </button>
