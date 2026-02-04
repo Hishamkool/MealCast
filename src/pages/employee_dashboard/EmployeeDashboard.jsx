@@ -9,72 +9,81 @@ import { SnackBarContext } from "../../context/SnackBarContext";
 import DashboardHeader from "../../components/employee_components/DashboardHeader/DashboardHeader";
 import MealTimeSelector from "../../components/employee_components/MealTimeSelector/MealTimeSelector";
 import MealHeader from "../../components/employee_components/MealHeader/MealHeader";
-import OptOutButton from "../../components/employee_components/OptOutButton/OptOutButton";
 import SubmissionSummary from "../../components/employee_components/SubmissionSummary/SubmissionSummary";
 import SubmitButton from "../../components/employee_components/SubmitButton/SubmitButton";
 import DialogBox from "../../components/DialogBox/DialogBox";
 
+const EMPTY_MEAL_STATE = {
+  optedOut: false,
+  submitted: false,
+  selectedMeal: null,
+  payload: null,
+};
 function EmployeeDashboard() {
   const { user, logout } = useAuth(); //login authentication
   const navigate = useNavigate();
   const { showSnackBar } = useContext(SnackBarContext);
 
   const [mealTime, setMealTime] = useState(Object.keys(MEAL_OPTIONS)[0]); // meal time status "lunch""dinner"
-
-  const [selectedMeal, setSelectedMeal] = useState(null); // finding selected food card
-  const [submittedMeals, setSubmittedMeals] = useState({}); //submitted meals per meal time to prevent duplicate submission.
-  const alreadySubmitted = !!submittedMeals[mealTime];
-  const [optedOut, setOptedOut] = useState(false); //   opted out status
+  /* changing to single value of truth */
+  const [mealState, setMealState] = useState({}); // to manage all the states of the selected , submitted , optedout meals bases on meal time
+  /* 
+  mealState = {
+    breakfast: { ... },
+    lunch: { ... },
+    dinner: { ... }
+  }
+   */
   const [showLogoutDialog, setShowLogoutDialog] = useState(false); // to show and hide logout dialog box
   const [showOptOutDialog, setShowOptOutDialog] = useState(false); // to show or hide opt out confirmation dialog
   const mealTitle = mealTime.charAt(0).toUpperCase() + mealTime.slice(1);
-  const currentMealOption = MEAL_OPTIONS[mealTime]; // menu based on meal time - breakfast , lunch ..
+  const currentMenu = MEAL_OPTIONS[mealTime]; // for menu options based on meal time - breakfast , lunch ..
 
-  // functions
-  // function to get the latest state values
-  /*   function useDebugState(label, state) {
-    useEffect(() => {
-      console.log(label, state);
-    }, [state]);
-  }
-  useDebugState("mealTime", mealTime);
-  useDebugState("selectedMeal", selectedMeal);
-  useDebugState("submittedMeals", submittedMeals);
-  useDebugState("optedOut", optedOut); */
+  /* SINGLE SOURCE OF TRUTH FOR THE MEALS SELECTION , SUBMITION , OPTING OUT ETC */
+  const currentMealState = mealState[mealTime] ?? EMPTY_MEAL_STATE;
+  const selectedMeal = currentMealState.selectedMeal;
+  const optedOut = currentMealState.optedOut;
+  const alreadySubmitted = currentMealState.submitted;
 
-  // card selection
+  // food card selection
   const handleMealSelection = (meal, count) => {
-    setSelectedMeal({ ...meal, count });
-    setOptedOut(false);
+    setMealState((prev) => ({
+      ...prev,
+      [mealTime]: {
+        ...(prev[mealTime] ?? EMPTY_MEAL_STATE),
+        selectedMeal: { ...meal, count },
+        optedOut: false,
+      },
+    }));
   };
   // submitting meals
   const handleSubmitMeals = () => {
     if (alreadySubmitted) {
-      showSnackBar(`Already submitted for ${mealTime}`, "warning");
+      showSnackBar(`Already submitted for ${mealTime}`, "error");
       return;
     }
     if (!selectedMeal && !optedOut) {
       showSnackBar("Please select a meal or opt out", "warning");
       return;
     }
-    const payLoad = {
+    const payload = {
       user: user?.username ?? "Guest",
       submittedAt: new Date().toISOString(), // sample 2026-01-28T13:12:10.123Z
-      mealTime: mealTime,
+      mealTime,
       meal: optedOut ? null : selectedMeal,
       optedOut,
     };
+    setMealState((prev) => ({
+      ...prev,
+      [mealTime]: {
+        ...(prev[mealTime] ?? EMPTY_MEAL_STATE),
+        submitted: true,
+        payload: payload,
+      },
+    }));
+    console.log("Submitted meal payload:", payload);
 
-    // storing selected meals locally to prevent duplicate submission
-    setSubmittedMeals((previous) => {
-      return {
-        ...previous,
-        [mealTime]: payLoad,
-      };
-    });
-    console.log("Submitted meal payload:", payLoad);
-
-    showSnackBar("Successfully submited", "success");
+    showSnackBar("Successfully submitted", "success");
   };
 
   // logout function
@@ -94,19 +103,34 @@ function EmployeeDashboard() {
     if (!optedOut) {
       setShowOptOutDialog(true); // confirmation dialog
     } else {
-      setOptedOut(false); // setting opted out to false to make sure that the food cards are active
+      // setOptedOut(false); // setting opted out to false to make sure that the food cards are active
+      setMealState((prev) => ({
+        ...prev,
+        [mealTime]: {
+          ...prev[mealTime],
+          optedOut: false,
+        },
+      }));
     }
   };
   const handleConfirmOptOut = () => {
-    setOptedOut(true);
-    setSelectedMeal(null);
+    // setOptedOut(true);
+    // setSelectedMeal(null);
+    setMealState((prev) => ({
+      ...prev,
+      [mealTime]: {
+        ...(prev[mealTime] ?? EMPTY_MEAL_STATE),
+        optedOut: true,
+        selectedMeal: null,
+      },
+    }));
     showSnackBar("Click on submit to opt out", "default");
     console.log(`${user} opted out for ${mealTime}`);
     setShowOptOutDialog(false);
   };
   useEffect(() => {
-    console.log("selected meals", selectedMeal);
-  }, [selectedMeal]);
+    console.table(mealState);
+  }, [mealState]);
 
   return (
     <div className="employee-dash">
@@ -127,24 +151,19 @@ function EmployeeDashboard() {
           onOptOut={handleOptOutClick}
           alreadySubmitted={alreadySubmitted}
         />
-        {/* <OptOutButton
-          mealTitle={mealTitle}
-          optedOut={optedOut}
-          onOptOut={handleOptOut}
-          alreadySubmitted={alreadySubmitted}
-        /> */}
+
         {/* food cards */}
         <div className="food-card-grid">
-          {currentMealOption.length === 0 ? (
+          {currentMenu.length === 0 ? (
             <div>No menu found for {mealTime}</div>
           ) : (
-            currentMealOption.map((meal) => (
+            currentMenu.map((meal) => (
               <FoodCard
                 key={meal.id}
                 mealId={meal.id}
                 alreadySubmitted={alreadySubmitted}
                 optedOut={optedOut}
-                activeSubmissionId={submittedMeals[mealTime]?.meal?.id}
+                activeSubmissionId={currentMealState.payload?.meal?.id}
                 meal={meal}
                 onAction={handleMealSelection}
                 isSelected={selectedMeal?.id === meal.id}
@@ -155,7 +174,7 @@ function EmployeeDashboard() {
       </div>
       <SubmissionSummary
         submitted={alreadySubmitted}
-        submittedMeal={submittedMeals[mealTime]}
+        submittedMeal={currentMealState.payload}
       />
       <SubmitButton
         onSubmit={handleSubmitMeals}
@@ -194,7 +213,8 @@ function EmployeeDashboard() {
           setShowOptOutDialog(false);
         }}
         title="Confirm Opt Out"
-        description={`Are you sure you dont need ${mealTime}`}
+        description={`Are you sure you dont need ${mealTime} ?`}
+        impNote={`Please click on submit after opting out to record your absence`}
         actions={
           <>
             <button

@@ -58,3 +58,8 @@
   color: white;
   border-color: gray;
 }
+
+.imp-note {
+  color: rgb(189, 24, 24);
+  padding-top: 10px;
+}

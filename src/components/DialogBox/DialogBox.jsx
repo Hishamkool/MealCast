@@ -1,7 +1,7 @@
 import React from "react";
 import "./DialogBox.css";
 
-function DialogBox({ open, title, description, actions, onClose }) {
+function DialogBox({ open, title, description, actions, onClose, impNote }) {
   if (!open) return null;
   return (
     <div>
@@ -15,6 +15,7 @@ function DialogBox({ open, title, description, actions, onClose }) {
           </div>
           <div className="dialog-content">
             {description && <p>{description}</p>}
+            {impNote && <p className="imp-note">{`NOTE: ${impNote}`}</p>}
           </div>
           {actions && <div className="btns-cnt">{actions}</div>}
         </div>
