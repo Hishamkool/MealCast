@@ -9,7 +9,7 @@ function SubmissionSummary({ submitted, submittedMeal }) {
   const moreThanOneMeal = meal?.count > 1;
 
   return (
-    <div className="submission-summary">
+    <div className={`submission-summary ${optedOut ? "optedOut" : ""}`}>
       <div className="submission-head">
         <h3>Successfully Submitted</h3>
         <Check />
