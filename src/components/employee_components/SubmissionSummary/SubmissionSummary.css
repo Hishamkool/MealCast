@@ -6,8 +6,14 @@
   margin: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 15px;
-  background-color: white;
+  max-width: 100%;
+  background-color: hsl(120, 73%, 75%);
+}
+.submission-summary.optedOut {
+  /* background-color: rgb(237, 150, 150); */
+  background-color: hsl(48, 73%, 75%);
 }
 .submission-head {
   display: flex;
