@@ -19,6 +19,7 @@ const EMPTY_MEAL_STATE = {
   submitted: false,
   selectedMeal: null,
   payload: null,
+  autoSubmitted: false,
 };
 function EmployeeDashboard() {
   const { user, logout } = useAuth(); //login authentication
@@ -89,6 +90,38 @@ function EmployeeDashboard() {
 
     showSnackBar("Successfully submitted", "success");
   };
+  // auto submit meals when deadline is reached
+  const autoSubmitOnDeadline = () => {
+    const current = mealState[mealTime] ?? EMPTY_MEAL_STATE;
+    // need not work if user submits before deadline so
+    if (current.submitted) return;
+    // also if no data for coundown isExpired
+    if (!countdown?.isExpired) return;
+
+    const payload = {
+      user: user?.username ?? "Guest",
+      submittedAt: new Date().toISOString(),
+      mealTime,
+      meal: null,
+      optedOut: true,
+      autoSubmitted: true,
+      reason: "deadline_expired",
+    };
+
+    setMealState((prev) => ({
+      ...prev,
+      [mealTime]: {
+        ...current,
+        submitted: true,
+        optedOut: true,
+        autoSubmitted: true,
+        selectedMeal: null,
+        payload,
+      },
+    }));
+
+    showSnackBar(`Votting closed for ${mealTime},auto opted out`, "warning");
+  };
 
   // logout function
   // logout click to open dialog box
@@ -141,8 +174,9 @@ function EmployeeDashboard() {
     setShowOptOutDialog(false);
   };
   useEffect(() => {
-    console.table(mealState);
-  }, [mealState]);
+    if (countdown?.isExpired) return;
+    autoSubmitOnDeadline();
+  }, [countdown?.isExpired, mealTime]);
 
   return (
     <div className="employee-dash">
@@ -168,6 +202,7 @@ function EmployeeDashboard() {
         <SubmissionSummary
           submitted={alreadySubmitted}
           submittedMeal={currentMealState.payload}
+          autoSubmitted={currentMealState.autoSubmitted}
         />
         {/* food cards */}
         <div className="food-card-grid">
@@ -200,7 +235,7 @@ function EmployeeDashboard() {
         open={showLogoutDialog}
         onClose={() => setShowLogoutDialog(false)}
         title="Confirm Logout"
-        description="Are you sure you want to logout ?"
+        description="Are you sure you want to log out?"
         actions={
           <>
             <button
@@ -226,9 +261,9 @@ function EmployeeDashboard() {
         onClose={() => {
           setShowOptOutDialog(false);
         }}
-        title="Confirm Opt Out"
-        description={`Are you sure you dont need ${mealTime} for today ?`}
-        impNote={`This action cannot be undone`}
+        title="Skip this meal?"
+        description={`Are you sure you don't want ${mealTime} today?`}
+        impNote="This action cannot be undone."
         actions={
           <>
             <button
