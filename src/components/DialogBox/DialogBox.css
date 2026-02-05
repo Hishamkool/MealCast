@@ -20,7 +20,7 @@
   text-align: center;
   position: relative;
   width: max-content;
-  padding: 10px 30px;
+  padding: 10px 15px;
   gap: 10px;
 }
 .close-btn {
@@ -61,5 +61,4 @@
 
 .imp-note {
   color: rgb(189, 24, 24);
-  padding-top: 10px;
 }

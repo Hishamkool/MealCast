@@ -1,6 +1,6 @@
 import "./SubmissionSummary.css";
 import Check from "../../../assets/svg/check_circle.svg?react";
-function SubmissionSummary({ submitted, submittedMeal }) {
+function SubmissionSummary({ submitted, submittedMeal, autoSubmitted }) {
   if (!submitted || !submittedMeal) {
     return null;
   }
@@ -12,7 +12,7 @@ function SubmissionSummary({ submitted, submittedMeal }) {
     <div className={`submission-summary ${optedOut ? "optedOut" : ""}`}>
       <div className="submission-head">
         <h3>Successfully Submitted</h3>
-        <Check />
+        <Check /> {/* circle svg */}
       </div>
       {optedOut ? (
         <p>You opted out for {mealTime} </p>
@@ -22,6 +22,7 @@ function SubmissionSummary({ submitted, submittedMeal }) {
           {moreThanOneMeal ? "'s" : ""}
         </p>
       )}
+      {autoSubmitted && <p>Automatically opted out due to deadline</p>}
     </div>
   );
 }

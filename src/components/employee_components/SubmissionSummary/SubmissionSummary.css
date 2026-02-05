@@ -13,7 +13,7 @@
 }
 .submission-summary.optedOut {
   /* background-color: rgb(237, 150, 150); */
-  background-color: hsl(48, 73%, 75%);
+  background-color: var(--color-optedout-bg);
 }
 .submission-head {
   display: flex;

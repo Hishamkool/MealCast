@@ -33,13 +33,13 @@
 }
 
 .btn-positive {
-  --btn-bg: #16a34a;
-  --btn-hover: #15803d;
-  --btn-focus: #86efac;
+  --btn-bg: var(--btn-positive-bg);
+  --btn-hover: var(--btn-positive-hover);
+  --btn-focus: var(--btn-positive-focus);
 }
 
 .btn-negative {
-  --btn-bg: #dc2626;
-  --btn-hover: #b91c1c;
-  --btn-focus: #fca5a5;
+  --btn-bg: var(--btn-negative-bg);
+  --btn-hover: var(--btn-negative-hover);
+  --btn-focus: var(--btn-negative-focus);
 }

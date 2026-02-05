@@ -1,8 +1,3 @@
-.submit-vote-cnt button {
-  --btn-bg: #4f46e5;
-  --btn-hover: #4338ca;
-  --btn-focus: #a5b4fc;
-}
 .submit-btn {
   position: fixed;
   bottom: 20px;

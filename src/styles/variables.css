@@ -4,4 +4,25 @@
   --btn-bg: hsl(243, 70%, 50%);
   --btn-hover: hsl(243, 100%, 60%);
   --btn-focus: #a5b4fc;
+
+  --btn-positive-bg: #16a34a;
+  --btn-positive-hover: #15803d;
+  --btn-positive-focus: #86efac;
+
+  --btn-negative-bg: #dc2626;
+  --btn-negative-hover: #b91c1c;
+  --btn-negative-focus: #fca5a5;
+
+  /* Snackbar colors */
+  --snackbar-success: #24864f;
+  --snackbar-error: #d93a52;
+  /* --snackbar-warning: #fdb022; */
+  --snackbar-warning: orangered;
+  --snackbar-default: #323337;
+
+  /* background colors */
+  --color-deadline-bg: lightgreen;
+  /* --color-vote-ends-bg: #ffa07a; */
+  --color-vote-ends-bg: orange;
+  --color-optedout-bg: #eedb91;
 }

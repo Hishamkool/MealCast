@@ -4,7 +4,7 @@ function SubmitButton({ onSubmit, optedOut, disabled }) {
   return (
     <div className={`submit-vote-cnt center-btn`}>
       <button
-        className="btn-base btn-positive submit-btn"
+        className="btn-base submit-btn"
         onClick={onSubmit}
         disabled={disabled}
       >
