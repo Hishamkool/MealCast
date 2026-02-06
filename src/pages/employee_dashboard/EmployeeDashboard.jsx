@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MEAL_OPTIONS } from "../../constants/meals"; //meals data
 import { useAuth } from "../../context/AuthContext";
@@ -13,6 +13,7 @@ import SubmissionSummary from "../../components/employee_components/SubmissionSu
 import SubmitButton from "../../components/employee_components/SubmitButton/SubmitButton";
 import DialogBox from "../../components/DialogBox/DialogBox";
 import useCountdownHook from "../../hooks/useCountdownHook";
+import isoStringFormatter from "../../utils/ISOStringFormatter";
 
 const EMPTY_MEAL_STATE = {
   optedOut: false,
@@ -25,6 +26,8 @@ function EmployeeDashboard() {
   const { user, logout } = useAuth(); //login authentication
   const navigate = useNavigate();
   const { showSnackBar } = useContext(SnackBarContext);
+  // const [mealoptions, setMealoptions] = useState(MEAL_OPTIONS);
+  console.log("Rendering employee dashboard...");
 
   const [mealTime, setMealTime] = useState(Object.keys(MEAL_OPTIONS)[0]); // meal time status "lunch""dinner"
   /* changing to single value of truth */
@@ -120,7 +123,7 @@ function EmployeeDashboard() {
       },
     }));
 
-    showSnackBar(`Votting closed for ${mealTime},auto opted out`, "warning");
+    showSnackBar(`Votting closed! Auto opted out`, "warning");
   };
 
   // logout function
@@ -174,9 +177,17 @@ function EmployeeDashboard() {
     setShowOptOutDialog(false);
   };
   useEffect(() => {
-    if (countdown?.isExpired) return;
+    // if countdown.isExpired === false then return else call the autosubmit function
+    if (!countdown?.isExpired) return;
     autoSubmitOnDeadline();
+    // const countdownExpired = countdown?.isExpired;
+    // console.log({ countdownExpired, mealTime });
   }, [countdown?.isExpired, mealTime]);
+
+  //one time function to get the date and time form the deadline string , only calculated when deadline changes aka mealtime changes(depended upon it)
+  const memoriseFormattedDeadlineISO = useMemo(() => {
+    return deadlineTime ? isoStringFormatter(deadlineTime) : null;
+  }, [deadlineTime]);
 
   return (
     <div className="employee-dash">
@@ -203,6 +214,7 @@ function EmployeeDashboard() {
           submitted={alreadySubmitted}
           submittedMeal={currentMealState.payload}
           autoSubmitted={currentMealState.autoSubmitted}
+          formattedDeadline={memoriseFormattedDeadlineISO}
         />
         {/* food cards */}
         <div className="food-card-grid">

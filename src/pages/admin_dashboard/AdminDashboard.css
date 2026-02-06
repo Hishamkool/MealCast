@@ -1,0 +1,14 @@
+.admin-dash {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+}
+
+.live-vote-tracking {
+  min-height: 100px;
+  border: 1px solid var(--color-btn-border-gray);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

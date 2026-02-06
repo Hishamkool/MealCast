@@ -12,7 +12,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
   const { login } = useAuth();
-  const { showSnackBar, variant } = useContext(SnackBarContext);
+  const { showSnackBar } = useContext(SnackBarContext);
 
   function handleLogin() {
     if (!username) {
