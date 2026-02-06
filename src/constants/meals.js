@@ -1,24 +1,16 @@
 export const MEAL_OPTIONS = {
   breakfast: {
-    deadlineTime: "2026-02-05T08:30:00.000Z", // Updated to Feb 5, 2026
+    // Feb 7 breakfast → deadline = Feb 7 noon IST
+    deadlineTime: "2026-02-07T06:30:00.000Z",
     items: [
-      {
-        id: "chapathi",
-        name: "Chapathi",
-        showCount: true,
-        type: "veg",
-      },
-      {
-        id: "dosa",
-        name: "Dosa",
-        showCount: true,
-        type: "veg",
-      },
+      { id: "chapathi", name: "Chapathi", showCount: true, type: "veg" },
+      { id: "dosa", name: "Dosa", showCount: true, type: "veg" },
     ],
   },
 
   lunch: {
-    deadlineTime: "2026-02-05T13:30:00.000Z", // Updated to Feb 5, 2026
+    // Feb 7 lunch → deadline = Feb 7 noon IST
+    deadlineTime: "2026-02-07T06:30:00.000Z",
     items: [
       {
         id: "veg-biriyani",
@@ -45,12 +37,14 @@ export const MEAL_OPTIONS = {
   },
 
   snacks: {
-    deadlineTime: "2026-02-05T12:53:00.000Z",
+    // (you didn’t specify snacks rule — keeping same-day noon)
+    deadlineTime: "2026-02-07T06:30:00.000Z",
     items: [],
   },
 
   dinner: {
-    deadlineTime: "2026-02-05T20:30:00.000Z", // Updated to Feb 5, 2026
+    // Feb 7 dinner → deadline = Feb 8 noon IST
+    deadlineTime: "2026-02-08T06:30:00.000Z",
     items: [
       {
         id: "appam",
@@ -92,30 +86,6 @@ export const MEAL_OPTIONS = {
         id: "idiyappam-chicken",
         name: "Idiyappam & Chicken Stew",
         showCount: true,
-        type: "non-veg",
-      },
-      {
-        id: "ghee-rice-chicken",
-        name: "Ghee Rice & Chicken Curry",
-        showCount: false,
-        type: "non-veg",
-      },
-      {
-        id: "ghee-rice-veg",
-        name: "Ghee Rice & Veg Curry",
-        showCount: false,
-        type: "veg",
-      },
-      {
-        id: "fried-rice-veg",
-        name: "Veg Fried Rice",
-        showCount: false,
-        type: "veg",
-      },
-      {
-        id: "fried-rice-chicken",
-        name: "Chicken Fried Rice",
-        showCount: false,
         type: "non-veg",
       },
     ],

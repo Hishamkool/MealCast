@@ -8,15 +8,25 @@ function useCountdownHook(deadlineISO) {
   });
 
   useEffect(() => {
-    if (!deadlineISO) return;
+    if (!deadlineISO) {
+      setTimeLeft(null);
+      return;
+    }
 
-    // finding timeleft immediately  when deadline changes
-    setTimeLeft(getTimeLeftUtil(deadlineISO));
-
-    // creating a update interval -- updates the ui every one sec
     const intervelId = setInterval(() => {
-      setTimeLeft(getTimeLeftUtil(deadlineISO));
+      const next = getTimeLeftUtil(deadlineISO);
+      setTimeLeft(next);
+      if (next.isExpired) {
+        clearInterval(intervelId);
+      }
     }, 1000);
+
+    const initial = getTimeLeftUtil(deadlineISO);
+    setTimeLeft(initial);
+
+    if (initial.isExpired) {
+      clearInterval(intervelId);
+    }
 
     return function cleanup() {
       clearInterval(intervelId);
