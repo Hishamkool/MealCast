@@ -3,4 +3,5 @@ export const ROUTES = {
   LOGIN: "/login",
   EMPLOYEE: "/employee",
   ADMIN: "/admin",
+  ADMIN_SETMENU: "/admin/set-menu",
 };

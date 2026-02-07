@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MEAL_OPTIONS } from "../../constants/meals"; //meals data
+
 import { useAuth } from "../../context/AuthContext";
 import { ROUTES } from "../../routes/routes";
 import FoodCard from "../../components/FoodCard/FoodCard";
@@ -14,6 +15,7 @@ import SubmitButton from "../../components/employee_components/SubmitButton/Subm
 import DialogBox from "../../components/DialogBox/DialogBox";
 import useCountdownHook from "../../hooks/useCountdownHook";
 import isoStringFormatter from "../../utils/ISOStringFormatter";
+import { STORAGE_KEYS } from "../../constants/storageKeys";
 
 const EMPTY_MEAL_STATE = {
   optedOut: false,
@@ -26,18 +28,18 @@ function EmployeeDashboard() {
   const { user, logout } = useAuth(); //login authentication
   const navigate = useNavigate();
   const { showSnackBar } = useContext(SnackBarContext);
-  // const [mealoptions, setMealoptions] = useState(MEAL_OPTIONS);
+  const [mealOptions, setMealOptions] = useState(MEAL_OPTIONS); //set meal option when backend integrated
   console.log("Rendering employee dashboard...");
 
-  const [mealTime, setMealTime] = useState(Object.keys(MEAL_OPTIONS)[0]); // meal time status "lunch""dinner"
+  const [mealTime, setMealTime] = useState(Object.keys(mealOptions)[0]); // meal time status "lunch""dinner"
   /* changing to single value of truth */
   const [mealState, setMealState] = useState({}); // to manage all the states of the selected , submitted , optedout meals bases on meal time
 
   const [showLogoutDialog, setShowLogoutDialog] = useState(false); // to show and hide logout dialog box
   const [showOptOutDialog, setShowOptOutDialog] = useState(false); // to show or hide opt out confirmation dialog
   const mealTitle = mealTime.charAt(0).toUpperCase() + mealTime.slice(1);
-  const currentMenu = MEAL_OPTIONS[mealTime].items; // for menu options based on meal time - breakfast , lunch ..
-  const deadlineTime = MEAL_OPTIONS[mealTime].deadlineTime; // deadline before optout for each mealtime
+  const currentMenu = mealOptions[mealTime].items; // for menu options based on meal time - breakfast , lunch ..
+  const deadlineTime = mealOptions[mealTime].deadlineTime; // deadline before optout for each mealtime
   const countdown = useCountdownHook(deadlineTime); // countdown hook to get the remaining time and update the counter
 
   /* SINGLE SOURCE OF TRUTH FOR THE MEALS SELECTION , SUBMITION , OPTING OUT ETC */
@@ -89,6 +91,7 @@ function EmployeeDashboard() {
         payload: payload,
       },
     }));
+    localStorage.setItem(STORAGE_KEYS.SUBMIT_PAYLOAD, JSON.stringify(payload));
     console.log("Submitted meal payload:", payload);
 
     showSnackBar("Successfully submitted", "success");
@@ -180,8 +183,6 @@ function EmployeeDashboard() {
     // if countdown.isExpired === false then return else call the autosubmit function
     if (!countdown?.isExpired) return;
     autoSubmitOnDeadline();
-    // const countdownExpired = countdown?.isExpired;
-    // console.log({ countdownExpired, mealTime });
   }, [countdown?.isExpired, mealTime]);
 
   //one time function to get the date and time form the deadline string , only calculated when deadline changes aka mealtime changes(depended upon it)

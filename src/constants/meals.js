@@ -1,9 +1,9 @@
 export const MEAL_OPTIONS = {
   breakfast: {
     // Feb 7 breakfast → deadline = Feb 7 noon IST
-    deadlineTime: "2026-02-07T06:30:00.000Z",
+    deadlineTime: "2026-02-07T07:30:00.000Z",
     items: [
-      { id: "chapathi", name: "Chapathi", showCount: true, type: "veg" },
+      { id: "chapatthi", name: "Chapathi", showCount: true, type: "veg" },
       { id: "dosa", name: "Dosa", showCount: true, type: "veg" },
     ],
   },
