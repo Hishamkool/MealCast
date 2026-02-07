@@ -1,19 +1,26 @@
 import { createContext, useContext, useState } from "react";
+import { STORAGE_KEYS } from "../constants/storageKeys";
 
 const AuthContext = createContext(null);
 
 // wrapping with provider
 function AuthProvider({ children }) {
   // set user useState
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem(STORAGE_KEYS.AUTH.USER);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
   const login = (username, role) => {
-    setUser({ username, role });
+    const userData = { username, role };
+    setUser(userData);
+    localStorage.setItem(STORAGE_KEYS.AUTH.USER, JSON.stringify(userData));
     console.log(`set current user : username: '${username}' , role: '${role}'`);
   };
   //logging out
   const logout = () => {
     setUser(null);
+    localStorage.removeItem(STORAGE_KEYS.AUTH.USER);
     console.log(`User logged out`);
   };
   return (

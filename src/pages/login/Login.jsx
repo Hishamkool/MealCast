@@ -15,8 +15,8 @@ function Login() {
   const { showSnackBar } = useContext(SnackBarContext);
 
   function handleLogin() {
-    if (!username) {
-      showSnackBar("Please enter you username", "error");
+    if (!username.trim()) {
+      showSnackBar("Please enter your username", "error");
       return;
     }
     if (!role) {
@@ -25,9 +25,9 @@ function Login() {
     }
     login(username, role);
     if (role === "admin") {
-      navigate(ROUTES.ADMIN);
+      navigate(ROUTES.ADMIN, { replace: true });
     } else if (role === "employee") {
-      navigate(ROUTES.EMPLOYEE);
+      navigate(ROUTES.EMPLOYEE, { replace: true });
     }
   }
 
@@ -37,40 +37,47 @@ function Login() {
 
       <div className="login-container">
         <span className="login-txt">Login</span>
-        <form className="login-form">
-          <label htmlFor="user-name">Username:</label>
-          <input
-            className="input-base"
-            id="user-name"
-            type="text"
-            placeholder="Enter name"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <label htmlFor="phone">Phone number:</label>
-          <input
-            className="input-base"
-            id="phone"
-            type="number"
-            placeholder="Enter 10 digits"
-            maxLength={10}
-            onChange={null} //set this
-          />
-
-          <label htmlFor="select-role">Select Role:</label>
-          <select
-            id="select-role"
-            className="input-base select-base"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <option value="">Select a role</option>
-            <option value="admin">Mess Admin</option>
-            <option value="employee">Employee</option>
-          </select>
+        <form
+          className="login-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+        >
+          <div className="form-items">
+            <label htmlFor="user-name">Username:</label>
+            <input
+              className="input-base"
+              id="user-name"
+              type="text"
+              placeholder="Enter name"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <label htmlFor="phone">Phone number:</label>
+            <input
+              className="input-base"
+              id="phone"
+              type="number"
+              placeholder="Enter 10 digits"
+              maxLength={10}
+              onChange={null} //set this
+            />
+            <label htmlFor="select-role">Select Role:</label>
+            <select
+              id="select-role"
+              className="input-base select-base"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="">Select a role</option>
+              <option value="admin">Mess Admin</option>
+              <option value="employee">Employee</option>
+            </select>
+          </div>
+          <button className="btn-base login" type="submit">
+            Login
+          </button>
         </form>
-        <button className="btn-base" onClick={handleLogin}>
-          Login
-        </button>
       </div>
     </div>
   );

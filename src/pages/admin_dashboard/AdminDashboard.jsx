@@ -22,10 +22,19 @@ function AdminDashboard() {
   return (
     <div className="admin-dash">
       <DashboardHeader username={user?.username} onLogout={handleLogoutClick} />
-
+      <div className="admin-nav">
+        <ul>
+          <li>
+            <a href="/admin/set-menu">Set Menu items</a>
+          </li>
+        </ul>
+      </div>
       <div className="live-vote-tracking">
         <h3>Live Vote tracking</h3>
         <div>Breakfast</div>
+        <div className="items-name-coutn">
+          <span>Chapathi</span> <span>23</span>
+        </div>
         <div>Lunch</div>
         <div>Dinner</div>
       </div>

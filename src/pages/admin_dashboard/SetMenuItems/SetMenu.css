@@ -1,0 +1,45 @@
+.set-menu-page {
+  background-color: #f7f7f7;
+  padding: 10px 20px;
+  min-height: 100vh;
+}
+.setmenu-header {
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.input-section {
+  padding-block: 30px;
+  padding-inline: 10px;
+  border-radius: 10px;
+  background-color: #fdfdfd;
+}
+
+.set-menu-input {
+  font-family: var(--font-primary);
+  padding: 5px;
+}
+
+/* form with grid */
+.grid-container-form {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(170px, 1fr);
+  grid-auto-rows: 30px;
+  column-gap: 10px;
+  row-gap: 20px;
+}
+.add-button {
+  grid-column: 1 / -1;
+  margin-inline: 10px;
+}
+.radio-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+.radio-label-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

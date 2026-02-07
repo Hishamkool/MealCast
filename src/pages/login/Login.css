@@ -6,6 +6,14 @@
   align-self: flex-start;
   font-size: 18px;
 }
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
 .login-body {
   min-height: 100vh;
   display: flex;
@@ -26,9 +34,9 @@
   align-items: center;
 }
 
-.login-form {
+.form-items {
   display: grid;
-  grid-template-columns: 100px 180px;
+  grid-template-columns: 120px 180px;
   row-gap: 12px;
   column-gap: 10px;
 }
