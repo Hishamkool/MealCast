@@ -23,7 +23,8 @@ function SubmissionSummary({
         !autoSubmitted && <p>You opted out for {mealTime} </p>
       ) : (
         <p>
-          You have chosen {moreThanOneMeal ? meal?.count : "one"} {meal?.name}
+          You have chosen {moreThanOneMeal ? meal?.count : "one"}{" "}
+          {meal?.foodName}
           {moreThanOneMeal ? "'s" : ""}
         </p>
       )}

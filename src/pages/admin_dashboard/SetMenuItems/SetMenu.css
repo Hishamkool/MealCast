@@ -30,9 +30,17 @@
   column-gap: 10px;
   row-gap: 20px;
 }
-.add-button {
+/* .add-button {
   grid-column: 1 / -1;
   margin-inline: 10px;
+} */
+.button-container {
+  display: flex;
+  margin-top: 35px;
+  align-items: center;
+}
+.add-button {
+  margin: auto;
 }
 .radio-group {
   display: grid;

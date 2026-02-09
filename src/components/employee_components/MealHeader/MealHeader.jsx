@@ -9,6 +9,15 @@ function MealHeader({
   countdown,
   deadlineTime,
 }) {
+  if (!countdown) {
+    return (
+      <div className="meals-cnt-title">
+        <h3>Menu for {mealTitle}</h3>
+        <p>Loading Deadline...</p>
+      </div>
+    );
+  }
+
   const { hours, min, sec, isExpired } = countdown;
   const deadline = deadlineTime ? isoStringFormatter(deadlineTime) : null;
   // const deadline = null;

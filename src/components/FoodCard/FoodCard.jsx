@@ -46,7 +46,7 @@ function FoodCard({
         }}
       >
         <div className="meal-title">
-          <span className="meal-name">{meal.name}</span>
+          <span className="meal-name">{meal.foodName}</span>
         </div>
 
         {meal.type && (
@@ -57,7 +57,7 @@ function FoodCard({
         )}
       </div>
       <div className="meal-actions">
-        {meal.showCount && (
+        {meal.allowCount && (
           <div className="count-cnt">
             <button
               className="btn-base count-btn"
