@@ -4,7 +4,7 @@ import { useState } from "react";
 
 function FoodCard({
   meal,
-  onAction,
+  handleMealSelection,
   isSelected,
   optedOut,
   mealId,
@@ -32,7 +32,7 @@ function FoodCard({
         `}
       onClick={() => {
         if (isDisabled) return;
-        onAction(meal, count);
+        handleMealSelection(meal, count);
       }}
     >
       {/* ${optedOut && activeSubmission === key ? "disabled" : ""} */}
@@ -66,7 +66,7 @@ function FoodCard({
                 if (isDisabled) return;
                 const newCount = Math.max(count - 1, 1);
                 setCount(newCount);
-                onAction(meal, newCount);
+                handleMealSelection(meal, newCount);
               }}
             >
               -
@@ -79,7 +79,7 @@ function FoodCard({
                 if (isDisabled) return;
                 const newCount = count + 1;
                 setCount(newCount);
-                onAction(meal, newCount);
+                handleMealSelection(meal, newCount);
               }}
             >
               +
@@ -90,7 +90,7 @@ function FoodCard({
           className={`select-btn btn-base btn-positive ${isSelected ? "btn-selected" : ""}`}
           onClick={() => {
             if (isDisabled) return;
-            onAction(meal, count);
+            handleMealSelection(meal, count);
           }}
         >
           {isSubmittedMeal

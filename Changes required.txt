@@ -1,0 +1,20 @@
+TO DO 
+# Add submission api for employees [done]
+# get submitted meals api so if user has already submitted make the selection un editable [done]
+
+
+
+changes required
+# pushed firebase.js - remove it.
+# The meal should expire or delete after deadline so that new meals can be added 
+# Consider working on a weekly meal like for mondays same meal , tuesday same meal , so that admin dosent 
+have to always assign the meals everyday and just look at the polling status.
+# display the meals added for the admin so that he can  delete or  edit the meals, 
+# If there is an option to edit the deadline then 
+    1. auto submit function should not just check for isExpired status it should recheck
+     deadline for changes and update the isExpired status to show the updated timeline.
+
+
+
+Fixed
+

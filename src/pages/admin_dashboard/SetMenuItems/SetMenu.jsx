@@ -1,22 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./SetMenu.css";
-import { addMealOption } from "../../../services/mealOptions.service";
+import { addMealOption } from "../../../services/meals/mealOptions.service";
 import { SnackBarContext } from "../../../context/SnackBarContext";
+
 import {
   getMealDeadline,
   setMealDeadline,
-} from "../../../services/mealDeadlines.service";
+} from "../../../services/meals/mealDeadlines.service";
+
+import { fetchEmployeeMeals } from "../../../services/meals/mealOptions.service";
 
 function SetMenu() {
   const { showSnackBar } = useContext(SnackBarContext);
-  const [loading, setLoading] = useState(false);
+  const [loadingAddMenu, setLoadingAddMenu] = useState(false);
   const [deadlineLoading, setDeadlineLoading] = useState(false);
 
   const [mealTime, setMealTime] = useState("breakfast");
-  const [lockedDeadline, setLockedDeadline] = useState(null); // from backend
   const [deadlineInput, setDeadlineInput] = useState(""); // use this as single source, lockeddeadline will be set to deadline input if value exists
 
+  /* backend states */
+  const [lockedDeadline, setLockedDeadline] = useState(null); // from backend
+  const [mealOpdtions, setMealOptions] = useState({}); // meal option from backend - fetchEmployeeMeals
   /* useEffects */
+  // to fetch deadline
   useEffect(() => {
     const fetchDeadline = async (mealTime) => {
       try {
@@ -38,6 +44,7 @@ function SetMenu() {
     fetchDeadline(mealTime);
   }, [mealTime]);
 
+  // to lock deadline if exists
   useEffect(() => {
     if (lockedDeadline) {
       //   converting to local time before saving to deadline time to show in ui
@@ -47,6 +54,20 @@ function SetMenu() {
     }
   }, [lockedDeadline]);
 
+  useEffect(() => {
+    const loadMeals = async () => {
+      try {
+        const { meals } = await fetchEmployeeMeals();
+        console.log("meals");
+        console.table(meals);
+
+        setMealOptions(meals);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadMeals();
+  }, [loadingAddMenu]);
   /* functions */
   // function to convert utc iso time to local time while displaying time from backend
   function isoToLocalInput(ISOString) {
@@ -84,7 +105,7 @@ function SetMenu() {
       return;
     }
     try {
-      setLoading(true);
+      setLoadingAddMenu(true);
       // if locked deadline exists then use it or create a new one and push it
       let deadlineISO = lockedDeadline;
       if (!lockedDeadline) {
@@ -101,7 +122,7 @@ function SetMenu() {
         createdAt: new Date().toISOString(),
       };
       await addMealOption(payload);
-      setLoading(false);
+      setLoadingAddMenu(false);
       showSnackBar("Meals added successfully", "success");
       form.reset();
     } catch (error) {
@@ -217,9 +238,9 @@ function SetMenu() {
               <button
                 type="submit"
                 className="add-button btn-base"
-                disabled={loading || deadlineLoading}
+                disabled={loadingAddMenu || deadlineLoading}
               >
-                {loading ? "Adding...." : "Add Item"}
+                {loadingAddMenu ? "Adding...." : "Add Item"}
               </button>
             </div>
           </form>
