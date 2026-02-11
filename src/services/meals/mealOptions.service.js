@@ -1,5 +1,5 @@
 import { addDoc, collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/firebase";
+import { db } from "../firebase";
 import {
   DATABASE_MEAL_DEADLINES,
   DATABASE_MEAL_OPTIONS,

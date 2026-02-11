@@ -1,6 +1,6 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { DATABASE_MEAL_DEADLINES } from "../../constants/firebase_constants";
-import { db } from "../../firebase/firebase";
+import { db } from "../firebase";
 
 // function to get deadline set by admin for a particular mealtime
 export async function getMealDeadline(mealTime) {

@@ -1,5 +1,5 @@
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../firebase/firebase";
+import { db } from "../firebase";
 import { DATABASE_MEAL_SUBMISSION } from "../../constants/firebase_constants";
 
 const submissionRef = collection(db, DATABASE_MEAL_SUBMISSION);
