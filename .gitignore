@@ -26,8 +26,10 @@ dist-ssr
 # user files
 /src/unpushed_files/
 # firebase config file
-src/firebase/firebase.js
-src/services/firebase.js
+# src/firebase/firebase.js
+# src/services/firebase.js
+.env.local
+.env
 
 # ignoring backup files
 *.backup
