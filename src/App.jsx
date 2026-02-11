@@ -16,8 +16,8 @@ function App() {
         <Route path={ROUTES.ROOT} element={<Navigate to={ROUTES.LOGIN} />} />
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.EMPLOYEE} element={<EmployeeDashboard />} />
-        <Route path={ROUTES.ADMIN_SETMENU} element={<SetMenu />} />
         <Route path={ROUTES.ADMIN} element={<AdminDashboard />} />
+        <Route path={ROUTES.ADMIN_SETMENU} element={<SetMenu />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

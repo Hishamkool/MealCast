@@ -40,7 +40,7 @@ function FoodCard({
         className="meal-title-cnt"
         style={{
           backgroundImage: `${GRADIENT_TINT},
-            url("/public/images/food_items/biriyani-bg.jpg")`,
+            url("./images/food_items/biriyani-bg.jpg")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
