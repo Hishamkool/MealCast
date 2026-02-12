@@ -83,8 +83,8 @@ function SetMenuForm({
                   type="radio"
                   name="food-variant"
                   id="veg"
-                  defaultChecked
                   value={"veg"}
+                  required
                 />
                 <label htmlFor="veg">VEG </label>
               </div>
@@ -109,8 +109,8 @@ function SetMenuForm({
                   type="radio"
                   name="allowMultiple"
                   id="multiple"
-                  defaultChecked
                   value={"true"}
+                  required
                 />
                 <label htmlFor="multiple">YES</label>
               </div>

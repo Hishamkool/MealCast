@@ -27,4 +27,8 @@
   --color-optedout-bg: #eedb91;
 
   --color-btn-border-gray: #e5e7eb;
+
+  /* set menu */
+  --color-card-bg-light: #fdfdfd;
+  --color-set-menu-bg: #f7f7f7;
 }

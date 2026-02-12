@@ -65,7 +65,7 @@ function SetMenu() {
   //  loading
   useEffect(() => {
     loadMeals();
-  }, []);
+  }, [loadingAddMenu === true]);
   /* functions */
   // function to loaded added menu options
   const loadMeals = async () => {
@@ -81,6 +81,8 @@ function SetMenu() {
     }
   };
 
+  //function to fetch meals for a particualr weekday
+
   // function to add menu items
   const handleAddMenuItem = async () => {
     const form = document.getElementById("submit-meal-form");
@@ -93,6 +95,10 @@ function SetMenu() {
     const deadlineValue = deadlineInput;
     if (!weekday) {
       showSnackBar("week day is required", "warning");
+      return;
+    }
+    if (allowCount === "") {
+      showSnackBar("CHoose if user should add count or not", "error");
       return;
     }
     if (!foodName) {

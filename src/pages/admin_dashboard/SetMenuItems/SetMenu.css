@@ -1,5 +1,5 @@
 .set-menu-page {
-  background-color: #f7f7f7;
+  background-color: var(--color-set-menu-bg);
   padding: 10px 20px;
   min-height: 100vh;
 }
@@ -14,7 +14,7 @@
   padding-block: 30px;
   padding-inline: 10px;
   border-radius: 10px;
-  background-color: #fdfdfd;
+  background-color: var(--color-card-bg-light);
 }
 
 .set-menu-input {
