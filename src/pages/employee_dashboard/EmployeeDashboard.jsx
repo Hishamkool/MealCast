@@ -22,6 +22,8 @@ import {
   fetchTodaysSubmission,
   submitMeal,
 } from "../../services/meals/mealSubmission.service";
+import { structureEmployeeMeals } from "../../utils/strucrureMeals.utils";
+import { getTodayWeekday } from "../../utils/getTodayWeekday.utils";
 
 // default or initial state of meal
 const EMPTY_MEAL_STATE = {
@@ -73,38 +75,26 @@ function EmployeeDashboard() {
       try {
         setLoadingMeals(true);
         const { meals, deadlines } = await fetchEmployeeMeals();
-        const structuredMeals = {};
-        // initializing object for all mealtimes
-        ["breakfast", "lunch", "dinner", "snacks"].forEach((mealTime) => {
-          structuredMeals[mealTime] = {
-            items: [],
-            deadlineISO: null,
-          };
-        });
+        //meals contains menu for all weekdays
+        //  to get only todays
 
-        meals.forEach((meal) => {
-          if (!meal.mealTime || !structuredMeals[meal.mealTime]) return;
-          structuredMeals[meal.mealTime].items.push(meal);
+        const todaysWeekDay = getTodayWeekday(); // monday, tuesday ...
+        const todaysMeals = meals.filter((meal) => {
+          return meal.weekday?.toLowerCase() === todaysWeekDay;
         });
+        console.log(todaysMeals);
 
-        deadlines.forEach((obj) => {
-          if (!structuredMeals[obj.id]) return;
-          structuredMeals[obj.id].deadlineISO = obj.deadlineISO;
-        });
-
+        const structuredMeals = structureEmployeeMeals(todaysMeals, deadlines);
         setMealOptions(structuredMeals);
 
-        /* now we have the menu form backend in structure meals but we need to check if user already submitted it so
-        we fetch the submitted meals and set submitted flag to true */
-
+        // to set submission status on fetched meals.
         const date = new Date().toISOString().split("T")[0];
         try {
           const todaysSubmissions = await fetchTodaysSubmission(
             user?.username,
             date,
           );
-          console.log("todaysSubmissions");
-          console.table(todaysSubmissions);
+
           const derivedMealsState = {};
           todaysSubmissions.forEach((sub) => {
             derivedMealsState[sub.mealTime] = {

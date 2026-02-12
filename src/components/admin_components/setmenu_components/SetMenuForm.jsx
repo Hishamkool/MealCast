@@ -65,6 +65,7 @@ function SetMenuForm({
               required={!lockedDeadline} //if not deadline from backend
               disabled={!!lockedDeadline} // if locked deadline exists then lock it
             />
+
             {/* food name */}
             <label htmlFor="food-name">Enter food name</label>
             <input

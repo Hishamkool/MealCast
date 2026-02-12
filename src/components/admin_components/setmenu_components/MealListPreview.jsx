@@ -3,11 +3,10 @@ import "./MealListPreview.css";
 import { WEEKDAYS } from "../../../constants/day.constants";
 import isoStringFormatter from "../../../utils/deadlineFormat.utils";
 import { capitalizeFirst } from "../../../utils/captitalize.first.utils";
+import { getTodayWeekday } from "../../../utils/getTodayWeekday.utils";
 
 function MealListPreview({ mealOptions, loading }) {
-  const today = new Date()
-    .toLocaleDateString("en-US", { weekday: "long" })
-    .toLowerCase();
+  const today = getTodayWeekday();
 
   const [selectedWeekday, setSelectedWeekday] = useState(today);
 
