@@ -1,5 +1,5 @@
 function SetMenuForm({
-  handleAddMenuItem,
+  handleOpenAddMenuDialog,
   weekday,
   setWeekday,
   mealTime,
@@ -18,7 +18,7 @@ function SetMenuForm({
           action=""
           onSubmit={(e) => {
             e.preventDefault();
-            handleAddMenuItem();
+            handleOpenAddMenuDialog();
           }}
         >
           <div className="grid-container-form">

@@ -16,11 +16,14 @@ import {
   localInputToISO,
 } from "../../../utils/utcConversion.utils";
 import { structureEmployeeMeals } from "../../../utils/strucrureMeals.utils";
+import DialogBox from "../../../components/DialogBox/DialogBox";
+import { capitalizeFirst } from "../../../utils/captitalize.first.utils";
 
 function SetMenu() {
   const { showSnackBar } = useContext(SnackBarContext);
   const [loadingAddMenu, setLoadingAddMenu] = useState(false);
   const [deadlineLoading, setDeadlineLoading] = useState(false);
+  const [showDialogAddItem, setShowDialogAddItem] = useState(false);
 
   const [mealTime, setMealTime] = useState("breakfast");
   const [deadlineInput, setDeadlineInput] = useState(""); // use this as single source, lockeddeadline will be set to deadline input if value exists
@@ -67,6 +70,7 @@ function SetMenu() {
     loadMeals();
   }, [loadingAddMenu === true]);
   /* functions */
+
   // function to loaded added menu options
   const loadMeals = async () => {
     try {
@@ -81,8 +85,9 @@ function SetMenu() {
     }
   };
 
-  //function to fetch meals for a particualr weekday
-
+  const handleOpenAddMenuDialog = () => {
+    setShowDialogAddItem(true);
+  };
   // function to add menu items
   const handleAddMenuItem = async () => {
     const form = document.getElementById("submit-meal-form");
@@ -139,6 +144,7 @@ function SetMenu() {
       console.error(error);
       showSnackBar("Failed to add meals!", "warning");
     }
+    setShowDialogAddItem(false);
   };
 
   return (
@@ -148,7 +154,7 @@ function SetMenu() {
       </header>
       {/* input form fields */}
       <SetMenuForm
-        handleAddMenuItem={handleAddMenuItem}
+        handleOpenAddMenuDialog={handleOpenAddMenuDialog}
         weekday={weekday}
         setWeekday={setWeekday}
         mealTime={mealTime}
@@ -162,6 +168,36 @@ function SetMenu() {
 
       {/* menu items view  */}
       <MealListPreview mealOptions={mealOptions} loading={loadingMealOptions} />
+
+      <DialogBox
+        open={showDialogAddItem}
+        onClose={() => setShowDialogAddItem(false)}
+        title="Confirm Add Item"
+        description={
+          <>
+            Are you sure you want to add item on{" "}
+            <strong>{capitalizeFirst(weekday)}</strong>?
+          </>
+        }
+        actions={
+          <>
+            <button
+              type="button"
+              className="cancel-btn btn-base"
+              onClick={() => setShowDialogAddItem(false)}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="accept-btn btn-base"
+              onClick={() => handleAddMenuItem()}
+            >
+              Sure
+            </button>
+          </>
+        }
+      />
     </div>
   );
 }
