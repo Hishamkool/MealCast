@@ -9,6 +9,13 @@ import {
 } from "../../../services/meals/mealDeadlines.service";
 
 import { fetchEmployeeMeals } from "../../../services/meals/mealOptions.service";
+import SetMenuForm from "../../../components/admin_components/setmenu_components/SetMenuForm";
+import MealListPreview from "../../../components/admin_components/setmenu_components/MealListPreview";
+import {
+  isoToLocalInput,
+  localInputToISO,
+} from "../../../utils/utcConversion.utils";
+import { structureEmployeeMeals } from "../../../utils/strucrureMeals.utils";
 
 function SetMenu() {
   const { showSnackBar } = useContext(SnackBarContext);
@@ -17,10 +24,11 @@ function SetMenu() {
 
   const [mealTime, setMealTime] = useState("breakfast");
   const [deadlineInput, setDeadlineInput] = useState(""); // use this as single source, lockeddeadline will be set to deadline input if value exists
-
+  const [weekday, setWeekday] = useState("monday"); // to select days of the week to repeat the menu
   /* backend states */
   const [lockedDeadline, setLockedDeadline] = useState(null); // from backend
-  const [mealOpdtions, setMealOptions] = useState({}); // meal option from backend - fetchEmployeeMeals
+  const [mealOptions, setMealOptions] = useState([]); // meal option from backend - fetchEmployeeMeals
+  const [loadingMealOptions, setLoadingMealOptions] = useState(false);
   /* useEffects */
   // to fetch deadline
   useEffect(() => {
@@ -54,33 +62,24 @@ function SetMenu() {
     }
   }, [lockedDeadline]);
 
+  //  loading
   useEffect(() => {
-    const loadMeals = async () => {
-      try {
-        const { meals } = await fetchEmployeeMeals();
-        console.log("meals");
-        console.table(meals);
-
-        setMealOptions(meals);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     loadMeals();
-  }, [loadingAddMenu]);
+  }, []);
   /* functions */
-  // function to convert utc iso time to local time while displaying time from backend
-  function isoToLocalInput(ISOString) {
-    const date = new Date(ISOString);
-    const offset = date.getTimezoneOffset() * 60 * 1000; // in milliseconds
-    const localTime = new Date(date.getTime() - offset); // here we get offset in minus already in ist , so -(-) becomes +
-    return localTime.toISOString().slice(0, 16);
-  }
-
-  //function to convert local input to iso string
-  function localInputToISO(localInput) {
-    return new Date(localInput).toISOString();
-  }
+  // function to loaded added menu options
+  const loadMeals = async () => {
+    try {
+      setLoadingMealOptions(true);
+      const { meals, deadlines } = await fetchEmployeeMeals();
+      const structuredMeals = structureEmployeeMeals(meals, deadlines);
+      setMealOptions(structuredMeals);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingMealOptions(false);
+    }
+  };
 
   // function to add menu items
   const handleAddMenuItem = async () => {
@@ -92,7 +91,10 @@ function SetMenu() {
     const type = formData.get("food-variant");
     const allowCount = formData.get("allowMultiple") === "true"; // formdata.get takes string value so passing bool values
     const deadlineValue = deadlineInput;
-
+    if (!weekday) {
+      showSnackBar("week day is required", "warning");
+      return;
+    }
     if (!foodName) {
       showSnackBar("Food name is required", "warning");
       return;
@@ -114,6 +116,7 @@ function SetMenu() {
         setLockedDeadline(deadlineISO);
       }
       const payload = {
+        weekday,
         mealTime,
         foodName,
         type,
@@ -123,6 +126,7 @@ function SetMenu() {
       };
       await addMealOption(payload);
       setLoadingAddMenu(false);
+      await loadMeals();
       showSnackBar("Meals added successfully", "success");
       form.reset();
     } catch (error) {
@@ -136,116 +140,22 @@ function SetMenu() {
       <header className="setmenu-header">
         <h1>Set Menu Items</h1>
       </header>
+      {/* input form fields */}
+      <SetMenuForm
+        handleAddMenuItem={handleAddMenuItem}
+        weekday={weekday}
+        setWeekday={setWeekday}
+        mealTime={mealTime}
+        setMealTime={setMealTime}
+        deadlineInput={deadlineInput}
+        setDeadlineInput={setDeadlineInput}
+        lockedDeadline={lockedDeadline}
+        loadingAddMenu={loadingAddMenu}
+        deadlineLoading={deadlineLoading}
+      />
 
-      <section className="input-section">
-        <div className="form-container">
-          <form
-            id="submit-meal-form"
-            action=""
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleAddMenuItem();
-            }}
-          >
-            <div className="grid-container-form">
-              <label htmlFor="meal-time">Choose MealTime</label>
-              <select
-                id="meal-time"
-                name="meal-time"
-                value={mealTime}
-                onChange={(e) => setMealTime(e.target.value)}
-              >
-                <option value="breakfast">Breakfast</option>
-                <option value="lunch">Lunch</option>
-                <option value="dinner">Dinner</option>
-                <option value="snacks">Snacks</option>
-              </select>
-              {/* deadline */}
-              <label htmlFor="">Select Deadline</label>
-              <input
-                type="datetime-local"
-                name="deadline"
-                onChange={(e) => {
-                  setDeadlineInput(e.target.value);
-                }}
-                value={deadlineInput}
-                required={!lockedDeadline} //if not deadline from backend
-                disabled={!!lockedDeadline} // if locked deadline exists then lock it
-              />
-              {/* food name */}
-              <label htmlFor="food-name">Enter food name</label>
-              <input
-                className="set-menu-input"
-                type="text"
-                name="food-name"
-                id="food-name"
-                required
-                placeholder="Chapathi and veg kuruma"
-              />
-              {/* veg or non veg radio*/}
-              <p>Choose a Type</p>
-              <div className="radio-group">
-                <div className="radio-label-button">
-                  <input
-                    type="radio"
-                    name="food-variant"
-                    id="veg"
-                    defaultChecked
-                    value={"veg"}
-                  />
-                  <label htmlFor="veg">VEG </label>
-                </div>
-                <div className="radio-label-button">
-                  <input
-                    type="radio"
-                    name="food-variant"
-                    id="non-veg"
-                    value={"non-veg"}
-                  />
-                  <label htmlFor="non-veg">NON VEG</label>
-                </div>
-              </div>
-              {/* Count needed*/}
-              <label>
-                Users can add count:
-                <small className="info-text">
-                  ( eg: select no for lunch ){" "}
-                </small>
-              </label>
-              <div className="radio-group">
-                <div className="radio-label-button">
-                  <input
-                    type="radio"
-                    name="allowMultiple"
-                    id="multiple"
-                    defaultChecked
-                    value={"true"}
-                  />
-                  <label htmlFor="multiple">YES</label>
-                </div>
-                <div className="radio-label-button">
-                  <input
-                    type="radio"
-                    name="allowMultiple"
-                    id="single"
-                    value={"false"}
-                  />
-                  <label htmlFor="single">NO (only 1 item)</label>
-                </div>
-              </div>
-            </div>
-            <div className="button-container">
-              <button
-                type="submit"
-                className="add-button btn-base"
-                disabled={loadingAddMenu || deadlineLoading}
-              >
-                {loadingAddMenu ? "Adding...." : "Add Item"}
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
+      {/* menu items view  */}
+      <MealListPreview mealOptions={mealOptions} loading={loadingMealOptions} />
     </div>
   );
 }

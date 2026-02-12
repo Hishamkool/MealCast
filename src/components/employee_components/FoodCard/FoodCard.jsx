@@ -1,5 +1,5 @@
 import "./FoodCard.css";
-import { GRADIENT_TINT } from "../../constants/colors";
+import { GRADIENT_TINT } from "../../../constants/colors";
 import { useState } from "react";
 
 function FoodCard({

@@ -1,6 +1,6 @@
 import React from "react";
 import "./MealHeader.css";
-import isoStringFormatter from "../../../utils/ISOStringFormatter";
+import isoStringFormatter from "../../../utils/deadlineFormat.utils";
 function MealHeader({
   mealTitle,
   optedOut,

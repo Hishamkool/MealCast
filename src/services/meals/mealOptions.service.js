@@ -24,7 +24,11 @@ export async function fetchEmployeeMeals() {
     id: doc.id,
     ...doc.data(),
   }));
-
+  console.group("🛜fetchEmployeeMeals");
+  console.log({ meals }, { deadlines });
+  console.table(meals);
+  console.table(deadlines);
+  console.groupEnd();
   return { meals, deadlines };
 }
 

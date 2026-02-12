@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getTimeLeftUtil from "../utils/getTimeLeftUtil";
+import getTimeLeftUtil from "../utils/timeLeft.utils";
 
 // aim is to create update the ui whenever the deadline changes aka mealtime is changed
 function useCountdownHook(deadlineISO) {

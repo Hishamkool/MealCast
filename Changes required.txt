@@ -1,7 +1,6 @@
 TO DO 
-# Add submission api for employees [done]
-# get submitted meals api so if user has already submitted make the selection un editable [done]
-
+# add a view to display the add menu options in the set menu page .[pending]
+# create api to update or delete added menu items [i think menu items if edited what about the previous votes from users] [pending]
 
 
 changes required
@@ -17,4 +16,8 @@ have to always assign the meals everyday and just look at the polling status.
 
 
 Fixed
+# Add submission api for employees [done]
+# get submitted meals api so if user has already submitted make the selection un editable [done]
+# deployed to vercel and netlify and added  rewrites config files to reroute to home instead of 404 [done]
+# fixed configuation files and only pushed encapsulated keys from .env.local [done]
 

@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { ROUTES } from "../../routes/routes";
-import FoodCard from "../../components/FoodCard/FoodCard";
+import FoodCard from "../../components/employee_components/FoodCard/FoodCard";
 import "./EmployeeDashboard.css";
 import { SnackBarContext } from "../../context/SnackBarContext";
 import DashboardHeader from "../../components/employee_components/DashboardHeader/DashboardHeader";
@@ -12,7 +12,7 @@ import SubmissionSummary from "../../components/employee_components/SubmissionSu
 import SubmitButton from "../../components/employee_components/SubmitButton/SubmitButton";
 import DialogBox from "../../components/DialogBox/DialogBox";
 import useCountdownHook from "../../hooks/useCountdownHook";
-import isoStringFormatter from "../../utils/ISOStringFormatter";
+import isoStringFormatter from "../../utils/deadlineFormat.utils";
 import { STORAGE_KEYS } from "../../constants/storageKeys";
 // import { MEAL_OPTIONS } from "../../constants/meals"; //dummy data
 
@@ -93,9 +93,7 @@ function EmployeeDashboard() {
         });
 
         setMealOptions(structuredMeals);
-        console.group("Structured meals data from backend");
-        console.table(structuredMeals);
-        console.groupEnd();
+
         /* now we have the menu form backend in structure meals but we need to check if user already submitted it so
         we fetch the submitted meals and set submitted flag to true */
 
