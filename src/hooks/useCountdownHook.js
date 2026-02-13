@@ -3,37 +3,55 @@ import getTimeLeftUtil from "../utils/timeLeft.utils";
 
 // aim is to create update the ui whenever the deadline changes aka mealtime is changed
 function useCountdownHook(deadlineISO) {
-  const [timeleft, setTimeLeft] = useState(() => {
-    return deadlineISO ? getTimeLeftUtil(deadlineISO) : null;
+  const getDefaultState = () => ({
+    hours: 0,
+    min: 0,
+    sec: 0,
+    isExpired: false,
+    isActive: false, // deadline is set or not, means null or not
+  });
+
+  const [timeLeft, setTimeLeft] = useState(() => {
+    if (!deadlineISO) {
+      return getDefaultState();
+    }
+    const initial = getTimeLeftUtil(deadlineISO);
+    return { ...initial, isActive: true };
   });
 
   useEffect(() => {
     if (!deadlineISO) {
-      setTimeLeft(null);
+      setTimeLeft(getDefaultState());
       return;
     }
 
-    const intervelId = setInterval(() => {
-      const next = getTimeLeftUtil(deadlineISO);
-      setTimeLeft(next);
-      if (next.isExpired) {
-        clearInterval(intervelId);
+    const update = () => {
+      const next = getTimeLeftUtil(deadlineISO); //for every new deadline iso
+
+      setTimeLeft({
+        ...next,
+        isActive: true,
+      });
+
+      return next.isExpired;
+    };
+    const initialExpired = update();
+
+    if (initialExpired) {
+      return;
+    }
+
+    const intervalID = setInterval(() => {
+      const expired = update();
+      if (expired) {
+        clearInterval(intervalID);
       }
     }, 1000);
 
-    const initial = getTimeLeftUtil(deadlineISO);
-    setTimeLeft(initial);
-
-    if (initial.isExpired) {
-      clearInterval(intervelId);
-    }
-
-    return function cleanup() {
-      clearInterval(intervelId);
-    };
+    return () => clearInterval(intervalID);
   }, [deadlineISO]);
 
   //returning time left so that we can dispaly it
-  return timeleft;
+  return timeLeft;
 }
 export default useCountdownHook;

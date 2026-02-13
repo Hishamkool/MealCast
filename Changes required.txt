@@ -1,16 +1,10 @@
 TO DO 
-# add a view to display the add menu options in the set menu page .[pending]
+# add a view to display the add menu options in the set menu page .[done]
 # create api to update or delete added menu items [i think menu items if edited what about the previous votes from users] [pending]
 
 
 changes required
-# [IMP] Deadline currently works on fixed values attached to a meal time , it should be dynaimically callculted form the
-    employee side , admin should just pass the cutoff time and the offset day so that the dealine can be calculated for any day.
-    1.need to change the architecture of meals_deadlines api
-    2.change how to fetchEmployeeMeals service which takes deadline iso
-    3. change the structuring of structureEmployeeMeals utility 
-    4. fix current deadline displaying logic to the new one.
-    5. Change deadline services : getMealDeadline , and setMealDeadline
+
 
 
 # The meal should expire or delete after deadline so that new meals can be added 
@@ -20,7 +14,7 @@ have to always assign the meals everyday and just look at the polling status. [a
 # If there is an option to edit the deadline then 
     1. auto submit function should not just check for isExpired status it should recheck
      deadline for changes and update the isExpired status to show the updated timeline.
-
+    2. add an option to only edit deadline
 
 
 Fixed
@@ -29,4 +23,10 @@ Fixed
 # get submitted meals api so if user has already submitted make the selection un editable [done]
 # deployed to vercel and netlify and added  rewrites config files to reroute to home instead of 404 [done]
 # fixed configuation files and only pushed encapsulated keys from .env.local [done]
-
+# ( [IMP] Deadline currently works on fixed values attached to a meal time , it should be dynaimically callculted form the
+    employee side , admin should just pass the cutoff time and the offset day so that the dealine can be calculated for any day.
+    1.need to change the architecture of meals_deadlines api
+    2.change how to fetchEmployeeMeals service which takes deadline iso
+    3. change the structuring of structureEmployeeMeals utility 
+    4. fix current deadline displaying logic to the new one.
+    5. Change deadline services : getMealDeadline , and setMealDeadline ) [done]

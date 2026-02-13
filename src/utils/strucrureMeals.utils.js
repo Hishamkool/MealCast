@@ -1,4 +1,5 @@
 import { MEAL_TIMES } from "../constants/mealTime.constants";
+import { calculateDeadlineISO } from "./calculateDeadlineISO.utils";
 
 // structure data received from fetchEmployeeMeals service
 export function structureEmployeeMeals(meals, deadlines) {
@@ -25,7 +26,10 @@ export function structureEmployeeMeals(meals, deadlines) {
   deadlines.forEach((deadline) => {
     if (!structured[deadline?.id]) return; //if id changes to other than mealtime
 
-    structured[deadline.id].deadlineISO = deadline.deadlineISO;
+    structured[deadline.id].deadlineISO = calculateDeadlineISO(
+      deadline.cutoffTime,
+      deadline.offset,
+    );
   });
 
   return structured;

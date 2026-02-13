@@ -38,12 +38,20 @@ function EmployeeDashboard() {
   const navigate = useNavigate();
   const { showSnackBar } = useContext(SnackBarContext);
   const DEFAULT_MEAL_TIME = "breakfast";
+  /* loading */
   const [loadingMeals, setLoadingMeals] = useState(true);
+  const [loadingDeadlines, setLoadingDeadlines] = useState(true);
   console.log("Rendering employee dashboard...");
 
-  const [mealTime, setMealTime] = useState(DEFAULT_MEAL_TIME); // meal time status "lunch""dinner"
+  const [mealTime, setMealTime] = useState(() => {
+    return (
+      localStorage.getItem(STORAGE_KEYS.EMP.SELECTED_MEAL_TIME) ??
+      DEFAULT_MEAL_TIME
+    );
+  }); // meal time status "lunch""dinner"
   /* changing to single value of truth */
   const [mealOptions, setMealOptions] = useState({}); //STATE TO FETCH MEAL OPTIONS FROM BACKEND
+
   const [mealOptionsState, setMealOptionsState] = useState({}); // to manage all the states of the selected , submitted , optedout meals
 
   const mealTitle = mealTime.charAt(0).toUpperCase() + mealTime.slice(1); // DEFAULT WILL BE BREAKFAST
@@ -55,6 +63,7 @@ function EmployeeDashboard() {
   /* dialog box states */
   const [showLogoutDialog, setShowLogoutDialog] = useState(false); // to show and hide logout dialog box
   const [showOptOutDialog, setShowOptOutDialog] = useState(false); // to show or hide opt out confirmation dialog
+  const [showSubmitDialog, setShowSubmitDialog] = useState(false); // show dialog while submit
   /* SINGLE SOURCE OF TRUTH FOR THE MEALS SELECTION , SUBMITION , OPTING OUT ETC */
   const currentMealState = mealOptionsState[mealTime] ?? EMPTY_MEAL_STATE;
   const selectedMeal = currentMealState.selectedMeal;
@@ -63,17 +72,20 @@ function EmployeeDashboard() {
 
   /* USE EFFECTS */
   useEffect(() => {
+    if (loadingMeals || loadingDeadlines) return;
+    if (!deadlineISO) return;
     // if countdown.isExpired === false then return else call the autosubmit function
     if (!countdown?.isExpired) return;
     const current = mealOptionsState[mealTime];
     if (current?.submitted) return;
     autoSubmitOnDeadline();
-  }, [countdown?.isExpired]);
+  }, [countdown?.isExpired, mealTime, loadingDeadlines, loadingMeals]);
 
   useEffect(() => {
     const loadMeals = async () => {
       try {
         setLoadingMeals(true);
+        setLoadingDeadlines(true); // since fetchEmployeeMeals calls both api
         const { meals, deadlines } = await fetchEmployeeMeals();
         //meals contains menu for all weekdays
         //  to get only todays
@@ -110,17 +122,21 @@ function EmployeeDashboard() {
           console.error(error);
           showSnackBar("Error fetching todays submissions", "error");
         }
-        setMealTime(DEFAULT_MEAL_TIME);
       } catch (error) {
         console.error(error);
         showSnackBar("Failed to load meals", "error");
       } finally {
         setLoadingMeals(false);
+        setLoadingDeadlines(false);
       }
     };
 
     loadMeals();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.EMP.SELECTED_MEAL_TIME, mealTime); // make sure mealtime is always string
+  }, [mealTime]);
   /* FUNCTIONS */
   // food card selection
   const handleMealSelection = (meal, count) => {
@@ -168,8 +184,7 @@ function EmployeeDashboard() {
       console.error(error);
       showSnackBar("Submission failed", "error");
     }
-
-    localStorage.setItem(STORAGE_KEYS.SUBMIT_PAYLOAD, JSON.stringify(payload));
+    setShowSubmitDialog(false);
   };
   // auto submit meals when deadline is reached
   const autoSubmitOnDeadline = async () => {
@@ -218,6 +233,9 @@ function EmployeeDashboard() {
   const handleLogoutClick = () => {
     setShowLogoutDialog(true);
   };
+  const handleSubmitBtnClick = () => {
+    setShowSubmitDialog(true);
+  };
   const handleConfirmLogout = () => {
     logout();
     console.log(`${user?.username} logged out successfully`);
@@ -247,6 +265,7 @@ function EmployeeDashboard() {
       mealTime,
       mealId: null,
       meal: null,
+      reason: "user_optedout",
       autoSubmitted: false,
       submittedAt: new Date().toISOString(),
       date: new Date().toISOString().split("T")[0],
@@ -299,7 +318,8 @@ function EmployeeDashboard() {
           onOptOut={handleOptOutClick}
           alreadySubmitted={alreadySubmitted}
           countdown={countdown}
-          deadlineTime={deadlineISO}
+          deadlineISO={deadlineISO}
+          loadingDeadlines={loadingDeadlines}
         />
         <SubmissionSummary
           submitted={alreadySubmitted}
@@ -333,7 +353,7 @@ function EmployeeDashboard() {
       </div>
 
       <SubmitButton
-        onSubmit={handleSubmitMeals}
+        onSubmit={handleSubmitBtnClick}
         disabled={alreadySubmitted}
         optedOut={optedOut}
       />
@@ -391,7 +411,37 @@ function EmployeeDashboard() {
             </button>
           </>
         }
-      ></DialogBox>
+      />
+      {/* submit dialog */}
+      <DialogBox
+        open={showSubmitDialog}
+        onClose={() => setShowSubmitDialog(false)}
+        title="Confirm Submission"
+        // description={`Are you sure you want to submit ${mealTime}?`}
+        description={
+          <>
+            Are you sure you want to submit <strong>{mealTime}</strong>
+          </>
+        }
+        actions={
+          <>
+            <button
+              type="button"
+              className="cancel-btn btn-base"
+              onClick={() => setShowSubmitDialog(false)}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="accept-btn btn-base"
+              onClick={() => handleSubmitMeals()}
+            >
+              Sure
+            </button>
+          </>
+        }
+      />
     </div>
   );
 }

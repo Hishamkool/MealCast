@@ -3,3 +3,4 @@ export const getTodayWeekday = (format = "long", locale = "en-US") => {
     .toLocaleDateString(locale, { weekday: format })
     .toLowerCase();
 };
+// "monday" , "tuesday" ...

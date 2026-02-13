@@ -4,9 +4,10 @@ function SetMenuForm({
   setWeekday,
   mealTime,
   setMealTime,
-  deadlineInput,
-  setDeadlineInput,
-  lockedDeadline,
+  cutoffTime,
+  setCutoffTime,
+  offset,
+  setOffset,
   loadingAddMenu,
   deadlineLoading,
 }) {
@@ -23,7 +24,9 @@ function SetMenuForm({
         >
           <div className="grid-container-form">
             {/* select date */}
-            <label htmlFor="weekday">Choose Weekday</label>
+            <label className="set-menu-label" htmlFor="weekday">
+              Choose Weekday :
+            </label>
             <select
               id="weekday"
               name="weekday"
@@ -40,7 +43,9 @@ function SetMenuForm({
               <option value="sunday">Every Sunday's</option>
             </select>
             {/* meal time */}
-            <label htmlFor="meal-time">Choose MealTime</label>
+            <label htmlFor="meal-time" className="set-menu-label">
+              Choose Meal Time :
+            </label>
             <select
               id="meal-time"
               name="meal-time"
@@ -53,7 +58,7 @@ function SetMenuForm({
               <option value="snacks">Snacks</option>
             </select>
             {/* deadline */}
-            <label htmlFor="deadline">Select Deadline</label>
+            {/*  <label htmlFor="deadline">Select Deadline</label>
             <input
               type="datetime-local"
               name="deadline"
@@ -64,10 +69,37 @@ function SetMenuForm({
               value={deadlineInput}
               required={!lockedDeadline} //if not deadline from backend
               disabled={!!lockedDeadline} // if locked deadline exists then lock it
+            /> */}
+            {/* cuttoff */}
+            <label htmlFor="cutoffTime" className="set-menu-label">
+              Cutoff Time : <br /> <small>(Votting ends by)</small>
+            </label>
+            <input
+              type="time"
+              name="cuttoff-time"
+              id="cuttoff-time"
+              value={cutoffTime}
+              required
+              onChange={(e) => {
+                setCutoffTime(e.target.value);
+              }}
             />
+            <label className="set-menu-label">
+              Voting closes : <br />
+              <small>(breakfast = 1 day before)</small>
+            </label>
 
+            <select
+              value={offset}
+              onChange={(e) => setOffset(Number(e.target.value))}
+            >
+              <option value="1">1 day before meal</option>
+              <option value="0">On the meal day</option>
+            </select>
             {/* food name */}
-            <label htmlFor="food-name">Enter food name</label>
+            <label htmlFor="food-name" className="set-menu-label">
+              Enter food name :
+            </label>
             <input
               className="set-menu-input"
               type="text"
@@ -77,7 +109,7 @@ function SetMenuForm({
               placeholder="Chapathi and veg kuruma"
             />
             {/* veg or non veg radio*/}
-            <p>Choose a Type</p>
+            <label className="set-menu-label">Choose a Type :</label>
             <div className="radio-group">
               <div className="radio-label-button">
                 <input
@@ -100,9 +132,10 @@ function SetMenuForm({
               </div>
             </div>
             {/* Count needed*/}
-            <label>
-              Users can add count:
-              <small className="info-text">( eg: select no for lunch ) </small>
+            <label className="set-menu-label">
+              Users can add count :
+              <br />
+              <small>( eg: YES=chapathi, NO=biriyani )</small>
             </label>
             <div className="radio-group">
               <div className="radio-label-button">

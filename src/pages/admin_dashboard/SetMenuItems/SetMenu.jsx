@@ -11,10 +11,7 @@ import {
 import { fetchEmployeeMeals } from "../../../services/meals/mealOptions.service";
 import SetMenuForm from "../../../components/admin_components/setmenu_components/SetMenuForm";
 import MealListPreview from "../../../components/admin_components/setmenu_components/MealListPreview";
-import {
-  isoToLocalInput,
-  localInputToISO,
-} from "../../../utils/utcConversion.utils";
+
 import { structureEmployeeMeals } from "../../../utils/strucrureMeals.utils";
 import DialogBox from "../../../components/DialogBox/DialogBox";
 import { capitalizeFirst } from "../../../utils/captitalize.first.utils";
@@ -22,47 +19,32 @@ import { capitalizeFirst } from "../../../utils/captitalize.first.utils";
 function SetMenu() {
   const { showSnackBar } = useContext(SnackBarContext);
   const [loadingAddMenu, setLoadingAddMenu] = useState(false);
-  const [deadlineLoading, setDeadlineLoading] = useState(false);
   const [showDialogAddItem, setShowDialogAddItem] = useState(false);
   const [mealTime, setMealTime] = useState("breakfast");
-  const [deadlineInput, setDeadlineInput] = useState(""); // use this as single source, lockeddeadline will be set to deadline input if value exists
+  const [cutoffTime, setCutoffTime] = useState(""); //cuttoff time input
+  const [offset, setOffset] = useState(); // this is used to tell if the vote ends by today or the day before itself
+  const [deadlineLoading, setDeadlineLoading] = useState(false);
   const [weekday, setWeekday] = useState("monday"); // to select days of the week to repeat the menu
   /* backend states */
-  const [lockedDeadline, setLockedDeadline] = useState(null); // from backend
+
   const [mealOptions, setMealOptions] = useState([]); // meal option from backend - fetchEmployeeMeals
   const [loadingMealOptions, setLoadingMealOptions] = useState(false);
   /* useEffects */
   // to fetch deadline
   useEffect(() => {
-    const fetchDeadline = async (mealTime) => {
+    /*   const fetchDeadline = async (mealTime) => {
       try {
         setDeadlineLoading(true);
         const deadlineData = await getMealDeadline(mealTime);
-        if (deadlineData) {
-          setLockedDeadline(deadlineData.deadlineISO);
-        } else {
-          setLockedDeadline(null);
-        }
       } catch (error) {
         console.error("failed to fetch deadline", error);
-        setLockedDeadline(null);
       } finally {
         setDeadlineLoading(false);
       }
     };
 
-    fetchDeadline(mealTime);
+    fetchDeadline(mealTime); */
   }, [mealTime]);
-
-  // to lock deadline if exists
-  useEffect(() => {
-    if (lockedDeadline) {
-      //   converting to local time before saving to deadline time to show in ui
-      setDeadlineInput(isoToLocalInput(lockedDeadline));
-    } else {
-      setDeadlineInput("");
-    }
-  }, [lockedDeadline]);
 
   //  loading
   useEffect(() => {
@@ -91,40 +73,31 @@ function SetMenu() {
   const handleAddMenuItem = async () => {
     const form = document.getElementById("submit-meal-form");
     const formData = new FormData(form);
-    // by using formdata i can get access to all the inputs with name attribute
-    // meal time is from state variable
     const foodName = formData.get("food-name");
     const type = formData.get("food-variant");
     const allowCount = formData.get("allowMultiple") === "true"; // formdata.get takes string value so passing bool values
-    const deadlineValue = deadlineInput;
+
     if (!weekday) {
       showSnackBar("week day is required", "warning");
       return;
     }
     if (allowCount === "") {
-      showSnackBar("CHoose if user should add count or not", "error");
+      showSnackBar("Choose if user should add count or not", "error");
       return;
     }
     if (!foodName) {
       showSnackBar("Food name is required", "warning");
       return;
     }
-    if (!deadlineValue && !lockedDeadline) {
-      showSnackBar(
-        "Deadline is required for the first time per mealtime",
-        "warning",
-      );
+    if (!cutoffTime) {
+      showSnackBar("Cutoff time is required", "warning", "warning");
       return;
     }
     try {
       setLoadingAddMenu(true);
-      // if locked deadline exists then use it or create a new one and push it
-      let deadlineISO = lockedDeadline;
-      if (!lockedDeadline) {
-        deadlineISO = localInputToISO(deadlineInput);
-        await setMealDeadline(mealTime, deadlineISO);
-        setLockedDeadline(deadlineISO);
-      }
+      // setting deadline
+      await setMealDeadline(mealTime, cutoffTime, offset);
+
       const payload = {
         weekday,
         mealTime,
@@ -158,9 +131,10 @@ function SetMenu() {
         setWeekday={setWeekday}
         mealTime={mealTime}
         setMealTime={setMealTime}
-        deadlineInput={deadlineInput}
-        setDeadlineInput={setDeadlineInput}
-        lockedDeadline={lockedDeadline}
+        cutoffTime={cutoffTime}
+        setCutoffTime={setCutoffTime}
+        offset={offset}
+        setOffset={setOffset}
         loadingAddMenu={loadingAddMenu}
         deadlineLoading={deadlineLoading}
       />
@@ -174,7 +148,7 @@ function SetMenu() {
         title="Confirm Add Item"
         description={
           <>
-            Are you sure you want to add item on
+            Are you sure you want to add item on{" "}
             <strong>{capitalizeFirst(weekday)}</strong>?
           </>
         }

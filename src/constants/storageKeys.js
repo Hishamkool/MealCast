@@ -3,4 +3,10 @@ export const STORAGE_KEYS = {
     USER: "auth_user",
   },
   SUBMIT_PAYLOAD: "submit_payload",
+  EMP: {
+    SELECTED_MEAL_TIME: "emp_selected_meal_time",
+  },
+  ADMIN: {
+    SELECTED_MEAL_TIME: "admin_selected_meal_time",
+  },
 };

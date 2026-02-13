@@ -10,10 +10,13 @@ export async function getMealDeadline(mealTime) {
 }
 
 // function to set a deadline to a particular meal time to lock it
-export async function setMealDeadline(mealTime, deadlineISO) {
+export async function setMealDeadline(mealTime, cutoffTime, offset) {
   const ref = doc(db, DATABASE_MEAL_DEADLINES, mealTime);
   await setDoc(ref, {
-    deadlineISO,
     createdAt: new Date().toISOString(),
+    cutoffTime,
+    mealTime,
+    offset,
   });
+  //id is mealTime still im passing mealTime as field of document
 }
