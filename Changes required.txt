@@ -4,11 +4,19 @@ TO DO
 
 
 changes required
-# pushed firebase.js - remove it.
+# [IMP] Deadline currently works on fixed values attached to a meal time , it should be dynaimically callculted form the
+    employee side , admin should just pass the cutoff time and the offset day so that the dealine can be calculated for any day.
+    1.need to change the architecture of meals_deadlines api
+    2.change how to fetchEmployeeMeals service which takes deadline iso
+    3. change the structuring of structureEmployeeMeals utility 
+    4. fix current deadline displaying logic to the new one.
+    5. Change deadline services : getMealDeadline , and setMealDeadline
+
+
 # The meal should expire or delete after deadline so that new meals can be added 
 # Consider working on a weekly meal like for mondays same meal , tuesday same meal , so that admin dosent 
-have to always assign the meals everyday and just look at the polling status.
-# display the meals added for the admin so that he can  delete or  edit the meals, 
+have to always assign the meals everyday and just look at the polling status. [almost done]
+# display the meals added for the admin so that he can  delete or  edit the meals, [displayed meals, edit or delete pending] 
 # If there is an option to edit the deadline then 
     1. auto submit function should not just check for isExpired status it should recheck
      deadline for changes and update the isExpired status to show the updated timeline.
@@ -16,6 +24,7 @@ have to always assign the meals everyday and just look at the polling status.
 
 
 Fixed
+# Removed the git history and made .env.local file which containt the api configuaration file. [done] 
 # Add submission api for employees [done]
 # get submitted meals api so if user has already submitted make the selection un editable [done]
 # deployed to vercel and netlify and added  rewrites config files to reroute to home instead of 404 [done]

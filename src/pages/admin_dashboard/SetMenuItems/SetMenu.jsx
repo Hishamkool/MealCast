@@ -24,7 +24,6 @@ function SetMenu() {
   const [loadingAddMenu, setLoadingAddMenu] = useState(false);
   const [deadlineLoading, setDeadlineLoading] = useState(false);
   const [showDialogAddItem, setShowDialogAddItem] = useState(false);
-
   const [mealTime, setMealTime] = useState("breakfast");
   const [deadlineInput, setDeadlineInput] = useState(""); // use this as single source, lockeddeadline will be set to deadline input if value exists
   const [weekday, setWeekday] = useState("monday"); // to select days of the week to repeat the menu
@@ -175,7 +174,7 @@ function SetMenu() {
         title="Confirm Add Item"
         description={
           <>
-            Are you sure you want to add item on{" "}
+            Are you sure you want to add item on
             <strong>{capitalizeFirst(weekday)}</strong>?
           </>
         }
