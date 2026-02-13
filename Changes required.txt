@@ -4,9 +4,6 @@ TO DO
 
 
 changes required
-
-
-
 # The meal should expire or delete after deadline so that new meals can be added 
 # Consider working on a weekly meal like for mondays same meal , tuesday same meal , so that admin dosent 
 have to always assign the meals everyday and just look at the polling status. [almost done]

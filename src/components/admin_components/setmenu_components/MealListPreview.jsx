@@ -4,6 +4,7 @@ import { WEEKDAYS } from "../../../constants/day.constants";
 import isoStringFormatter from "../../../utils/deadlineFormat.utils";
 import { capitalizeFirst } from "../../../utils/captitalize.first.utils";
 import { getTodayWeekday } from "../../../utils/getTodayWeekday.utils";
+import { OrbitProgress } from "react-loading-indicators";
 
 function MealListPreview({ mealOptions, loading }) {
   const today = getTodayWeekday();
@@ -50,6 +51,8 @@ function MealListPreview({ mealOptions, loading }) {
       {/* Loading */}
       {loading && (
         <div className="loading-submited-meals">
+          <OrbitProgress color="#2f26d9" size="small" text="" textColor="" />
+
           <h3>Fetching Submitted Meals...</h3>
         </div>
       )}
