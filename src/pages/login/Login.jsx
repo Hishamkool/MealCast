@@ -51,7 +51,7 @@ function Login() {
               id="user-name"
               type="text"
               placeholder="Enter name"
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value.trim())}
             />
             <label htmlFor="phone">Phone number:</label>
             <input

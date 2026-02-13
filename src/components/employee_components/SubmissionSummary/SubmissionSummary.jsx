@@ -31,7 +31,10 @@ function SubmissionSummary({
         )}
         {autoSubmitted && (
           <>
-            <p>Automatically opted out (deadline reached)</p>
+            <p>
+              Automatically opted out <br />
+              (deadline reached)
+            </p>
             {formattedDeadline && (
               <div>
                 <div>Deadline: </div>

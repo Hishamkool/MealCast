@@ -361,6 +361,7 @@ function EmployeeDashboard() {
       </div>
 
       <SubmitButton
+        noMenuItems={currentMenu.length === 0}
         onSubmit={handleSubmitBtnClick}
         disabled={alreadySubmitted}
         optedOut={optedOut}
