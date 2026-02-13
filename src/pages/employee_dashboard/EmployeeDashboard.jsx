@@ -24,6 +24,7 @@ import {
 } from "../../services/meals/mealSubmission.service";
 import { structureEmployeeMeals } from "../../utils/strucrureMeals.utils";
 import { getTodayWeekday } from "../../utils/getTodayWeekday.utils";
+import { BlinkBlur } from "react-loading-indicators";
 
 // default or initial state of meal
 const EMPTY_MEAL_STATE = {
@@ -329,12 +330,19 @@ function EmployeeDashboard() {
         />
         {/* food cards */}
         <div className="food-card-grid">
-          {loadingMeals ? (
-            <div>
-              <h3>Fetching Menu .........</h3>
+          {loadingMeals || currentMenu.length === 0 ? (
+            <div className="empty-state">
+              {loadingMeals ? (
+                <BlinkBlur
+                  color="hsl(243, 70%, 50%)"
+                  size="small"
+                  text="Fetching Menu ........."
+                  textColor="black"
+                />
+              ) : (
+                <div className="no-items">No menu found for {mealTime}</div>
+              )}
             </div>
-          ) : currentMenu.length === 0 ? (
-            <div>No menu found for {mealTime}</div>
           ) : (
             currentMenu.map((meal) => (
               <FoodCard

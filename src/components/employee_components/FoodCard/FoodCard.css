@@ -113,14 +113,18 @@
 }
 
 .food-card-grid {
+  flex: 1;
+  display: grid;
+  align-content: center;
   padding-block: 20px;
   justify-items: center;
   /* justify-content: start; */
-  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 25px;
 }
-
+.no-items {
+  font-weight: bold;
+}
 @media (min-width: 600px) {
   .meal-card {
     width: 100%;

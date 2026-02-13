@@ -14,38 +14,39 @@ function SubmissionSummary({
   const moreThanOneMeal = meal?.count > 1;
 
   return (
-    <div className={`submission-summary ${optedOut ? "optedOut" : ""}`}>
-      <div className="submission-head">
-        <h3>Successfully Submitted</h3>
-        <Check /> {/* circle svg */}
+    <section className="summary-container">
+      <div className={`submission-summary ${optedOut ? "optedOut" : ""}`}>
+        <div className="submission-head">
+          <h3>Successfully Submitted</h3>
+          <Check /> {/* circle svg */}
+        </div>
+        {optedOut ? (
+          !autoSubmitted && <p>You opted out for {mealTime} </p>
+        ) : (
+          <p>
+            You have chosen {moreThanOneMeal ? meal?.count : "one"}{" "}
+            {meal?.foodName}
+            {moreThanOneMeal ? "'s" : ""}
+          </p>
+        )}
+        {autoSubmitted && (
+          <>
+            <p>Automatically opted out (deadline reached)</p>
+            {formattedDeadline && (
+              <div>
+                <div>Deadline: </div>
+                <div>
+                  Date: <strong>{formattedDeadline.date}</strong>
+                </div>
+                <div>
+                  Time: <strong>{formattedDeadline.time}</strong>{" "}
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
-      {optedOut ? (
-        !autoSubmitted && <p>You opted out for {mealTime} </p>
-      ) : (
-        <p>
-          You have chosen {moreThanOneMeal ? meal?.count : "one"}{" "}
-          {meal?.foodName}
-          {moreThanOneMeal ? "'s" : ""}
-        </p>
-      )}
-      {autoSubmitted && (
-        <>
-          <p>Automatically opted out (deadline reached)</p>
-          {formattedDeadline && (
-            <div>
-              <div>Deadline: </div>
-
-              <div>
-                Date: <strong>{formattedDeadline.date}</strong>
-              </div>
-              <div>
-                Time: <strong>{formattedDeadline.time}</strong>{" "}
-              </div>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+    </section>
   );
 }
 
