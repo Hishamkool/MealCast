@@ -1,16 +1,41 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./MealListPreview.css";
 import { WEEKDAYS } from "../../../constants/day.constants";
 import isoStringFormatter from "../../../utils/deadlineFormat.utils";
 import { capitalizeFirst } from "../../../utils/captitalize.first.utils";
 import { getTodayWeekday } from "../../../utils/getTodayWeekday.utils";
 import { OrbitProgress } from "react-loading-indicators";
+import DialogBox from "../../DialogBox/DialogBox";
 
-function MealListPreview({ mealOptions, loading }) {
+function MealListPreview({ mealOptions, loading, onUpdateMeal }) {
   const today = getTodayWeekday();
-
+  const [showEditDialog, setShowEditDialog] = useState(false);
   const [selectedWeekday, setSelectedWeekday] = useState(today);
-
+  //edit dialogbox use states
+  const [selectedMeal, setSelectedMeal] = useState(null); //current meal when clicking edit button
+  const [editedName, setEditedName] = useState(""); //change food name
+  const [editedStats, setEditedStatus] = useState(true); // active or inactive state
+  //function to open edit menu
+  const handleOpenEditMenu = (meal) => {
+    setShowEditDialog(true);
+    setSelectedMeal(meal);
+  };
+  const handleCloseEditMenu = () => {
+    setShowEditDialog(false);
+    setSelectedMeal(null);
+  };
+  // function to confirm the edits on the food details
+  const handleSaveChanges = () => {
+    const updatedMeal = {
+      ...selectedMeal,
+      foodName: editedName && editedName.trim(),
+      active: editedStats && editedStats,
+    };
+    console.log("updated food name and status");
+    console.log({ updatedMeal });
+    onUpdateMeal(updatedMeal);
+    handleCloseEditMenu();
+  };
   //filtering meals based on weekday and only returning if there are items
   const filteredMeals = useMemo(() => {
     return Object.entries(mealOptions || {})
@@ -24,6 +49,13 @@ function MealListPreview({ mealOptions, loading }) {
       .filter((section) => section.items.length > 0);
   }, [selectedWeekday, mealOptions]);
 
+  //when edit button is clicked prefill the edited name and edited status
+  useEffect(() => {
+    if (selectedMeal) {
+      setEditedName(selectedMeal.foodName || "");
+      setEditedStatus(selectedMeal.active === true);
+    }
+  }, [selectedMeal]);
   return (
     <section className="meal-preview-section">
       {/* Header */}
@@ -78,12 +110,16 @@ function MealListPreview({ mealOptions, loading }) {
                 <div className="filterlist-card-cnt">
                   {items.map((meal) => {
                     return (
-                      <div key={meal.id} className="filterlist-menu-card">
+                      <div
+                        key={meal.id}
+                        className={`filterlist-menu-card ${meal.active === false ? "inactive-card" : ""}`}
+                      >
                         <h3>{meal.foodName?.trim()}</h3>
                         <p>Type: {meal.type}</p>
                         <p>Allow count: {meal.allowCount ? "Yes" : "No"}</p>
                         <p>
-                          Status: {meal.active === true ? "Active" : "Unknown"}
+                          Status:{" "}
+                          {meal.active === true ? "Active" : "In Active"}
                         </p>
                         {meal.createdAt && (
                           <p>
@@ -91,6 +127,12 @@ function MealListPreview({ mealOptions, loading }) {
                             {new Date(meal.createdAt).toLocaleDateString()}
                           </p>
                         )}
+                        <button
+                          className="btn-base edit-btn"
+                          onClick={() => handleOpenEditMenu(meal)}
+                        >
+                          Edit
+                        </button>
                       </div>
                     );
                   })}
@@ -99,6 +141,62 @@ function MealListPreview({ mealOptions, loading }) {
             </div>
           );
         })}
+      <DialogBox
+        open={showEditDialog}
+        onClose={() => setShowEditDialog(false)}
+        title="Edit Food Details"
+        impNote={"Inactive foods are not visible to the employees"}
+        description={
+          <div className="edit-dialog-description">
+            <div className="updateName">
+              <label htmlFor="edit-food-name">Edit Food Name:</label>
+              <input
+                type="text"
+                id="edit-food-name"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+              />
+            </div>
+            <div className="food-state">
+              <p>Change food state: </p>
+              <input
+                type="radio"
+                name="food-state-radio"
+                id="active-food"
+                checked={editedStats === true}
+                onChange={() => setEditedStatus(true)}
+              />
+              <label htmlFor="active-food">Active</label>
+              <input
+                type="radio"
+                name="food-state-radio"
+                id="inactive-food"
+                checked={editedStats === false}
+                onChange={() => setEditedStatus(false)}
+              />
+              <label htmlFor="inactive-food">In Active</label>
+            </div>
+          </div>
+        }
+        actions={
+          <>
+            <button
+              type="button"
+              className="cancel-btn btn-base"
+              onClick={() => setShowEditDialog(false)}
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              className="accept-btn btn-base"
+              onClick={() => handleSaveChanges()}
+            >
+              Save Changes
+            </button>
+          </>
+        }
+      />
     </section>
   );
 }

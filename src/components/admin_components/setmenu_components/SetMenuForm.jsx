@@ -58,18 +58,7 @@ function SetMenuForm({
               <option value="snacks">Snacks</option>
             </select>
             {/* deadline */}
-            {/*  <label htmlFor="deadline">Select Deadline</label>
-            <input
-              type="datetime-local"
-              name="deadline"
-              id="deadline"
-              onChange={(e) => {
-                setDeadlineInput(e.target.value);
-              }}
-              value={deadlineInput}
-              required={!lockedDeadline} //if not deadline from backend
-              disabled={!!lockedDeadline} // if locked deadline exists then lock it
-            /> */}
+
             {/* cuttoff */}
             <label htmlFor="cutoffTime" className="set-menu-label">
               Cutoff Time : <br /> <small>(Votting ends by)</small>

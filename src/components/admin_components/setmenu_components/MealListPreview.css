@@ -54,3 +54,25 @@
   gap: 2px;
   width: max-content;
 }
+.filterlist-menu-card.inactive-card {
+  border: 1px solid brown;
+  color: red;
+}
+
+.edit-dialog-description {
+  display: flex;
+  flex-direction: column;
+  padding-block: 10px;
+  align-items: center;
+  gap: 10px;
+}
+.updateName {
+  display: flex;
+
+  gap: 10px;
+}
+.food-state {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}

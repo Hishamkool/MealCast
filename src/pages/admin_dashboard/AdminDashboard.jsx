@@ -17,25 +17,12 @@ function AdminDashboard() {
   const [submissions, setSubmissions] = useState([]);
   const [loadingSubmissions, setLoadingSubmissions] = useState(true);
 
+  //live vote tracking
   useEffect(() => {
-    /*    const fetchSubmissions = async () => {
-      try {
-        setLoadingSubmissions(true);
-        const response = await fetchTodaysSubmissions();
-        setSubmissions(response || []);
-      } catch (error) {
-        console.error("fetching submissions error", error);
-      } finally {
-        setLoadingSubmissions(false);
-      }
-    };
-    fetchSubmissions(); */
-
     const unsubscribe = fetchTodaysSubmissions((data) => {
       setSubmissions(data);
       setLoadingSubmissions(false);
     });
-
     return () => unsubscribe();
   }, []);
 

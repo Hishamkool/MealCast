@@ -57,7 +57,9 @@ function EmployeeDashboard() {
 
   const mealTitle = mealTime.charAt(0).toUpperCase() + mealTime.slice(1); // DEFAULT WILL BE BREAKFAST
   const mealData = mealOptions?.[mealTime]; // {deadline and items} per mealtime ,items contain menu
-  const currentMenu = mealData?.items ?? []; // menu for a meal time
+  const currentMenu = useMemo(() => {
+    return (mealData?.items ?? []).filter((meal) => meal.active === true);
+  }, [mealData]); // menu for a meal time except inactive meals
   const deadlineISO = mealData?.deadlineISO ?? null; // deadline before optout for each mealtime
   const countdown = useCountdownHook(deadlineISO); // countdown hook to get the remaining time and update the counter
 

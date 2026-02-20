@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./SetMenu.css";
-import { addMealOption } from "../../../services/meals/mealOptions.service";
+import {
+  addMealOption,
+  updateMealOption,
+} from "../../../services/meals/mealOptions.service";
 import { SnackBarContext } from "../../../context/SnackBarContext";
 
-import {
-  getMealDeadline,
-  setMealDeadline,
-} from "../../../services/meals/mealDeadlines.service";
+import { setMealDeadline } from "../../../services/meals/mealDeadlines.service";
 
 import { fetchEmployeeMeals } from "../../../services/meals/mealOptions.service";
 import SetMenuForm from "../../../components/admin_components/setmenu_components/SetMenuForm";
@@ -41,8 +41,7 @@ function SetMenu() {
       } finally {
         setDeadlineLoading(false);
       }
-    };
-
+    }; 
     fetchDeadline(mealTime); */
   }, [mealTime]);
 
@@ -51,7 +50,32 @@ function SetMenu() {
     loadMeals();
   }, [loadingAddMenu === true]);
   /* functions */
+  //function to edit the meal name or active status
+  const handleUpdateMeal = async (updatedMeal) => {
+    try {
+      const uploadPayload = {
+        foodName: updatedMeal.foodName,
+        active: updatedMeal.active,
+      };
 
+      await updateMealOption(updatedMeal.id, uploadPayload);
+      // await loadMeals(); //causing flikering so
+
+      setMealOptions((prev) => {
+        const newState = { ...prev };
+
+        Object.keys(newState).forEach((mealtime) => {
+          newState[mealtime].items = newState[mealtime].items.map((item) =>
+            item.id === updatedMeal.id ? { ...item, ...uploadPayload } : item,
+          );
+        });
+        return newState;
+      });
+    } catch (error) {
+      console.error("Failed to update meals", error);
+      showSnackBar("Failed to update meal", "error");
+    }
+  };
   // function to loaded added menu options
   const loadMeals = async () => {
     try {
@@ -140,7 +164,11 @@ function SetMenu() {
       />
 
       {/* menu items view  */}
-      <MealListPreview mealOptions={mealOptions} loading={loadingMealOptions} />
+      <MealListPreview
+        mealOptions={mealOptions}
+        loading={loadingMealOptions}
+        onUpdateMeal={handleUpdateMeal}
+      />
 
       <DialogBox
         open={showDialogAddItem}

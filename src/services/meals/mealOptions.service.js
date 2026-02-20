@@ -1,4 +1,10 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import {
   DATABASE_MEAL_DEADLINES,
@@ -32,6 +38,12 @@ export async function fetchEmployeeMeals() {
   return { meals, deadlines };
 }
 
+// updating meal option
+export async function updateMealOption(mealID, updateData) {
+  const mealRef = doc(db, DATABASE_MEAL_OPTIONS, mealID);
+  await updateDoc(mealRef, updateData);
+}
+
 /* export async function getMealOption() {
   const snapshot = await getDocs(mealOptionsRef);
 
@@ -43,10 +55,7 @@ export async function fetchEmployeeMeals() {
   });
 }  
   
-export async function updateMealOption(mealID, updateData) {
-  const mealRef = doc(db, DATABASE_MEAL_OPTIONS, mealID);
-  await updateDoc(mealRef, updateData);
-}
+
 
 export async function deleteMealOption(mealID) {
   await deleteDoc(doc(db, DATABASE_MEAL_OPTIONS, mealID));

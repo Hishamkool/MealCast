@@ -14,7 +14,7 @@ function DialogBox({ open, title, description, actions, onClose, impNote }) {
             </button>
           </div>
           <div className="dialog-content">
-            {description && <p>{description}</p>}
+            {description && <div>{description}</div>}
             {impNote && <p className="imp-note">{`NOTE: ${impNote}`}</p>}
           </div>
           {actions && <div className="btns-cnt">{actions}</div>}
