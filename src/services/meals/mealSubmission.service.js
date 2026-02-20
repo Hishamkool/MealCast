@@ -1,4 +1,11 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { DATABASE_MEAL_SUBMISSION } from "../../constants/firebase_constants";
 
@@ -9,7 +16,32 @@ export async function submitMeal(payload) {
   return docRef.id;
 }
 
-export async function fetchTodaysSubmission(username, date) {
+// live service
+export function fetchTodaysSubmissions(callback) {
+  const today = new Date().toISOString().split("T")[0];
+
+  const q = query(submissionRef, where("date", "==", today));
+
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    if (snapshot.empty) {
+      console.log("No submissions found");
+      callback([]);
+      return;
+    }
+
+    const submissions = snapshot.docs.map((d) => ({
+      id: d.id,
+      ...d.data(),
+    }));
+    submissions.forEach((submission) => {
+      console.table(submission);
+    });
+    callback(submissions);
+  });
+  return unsubscribe;
+}
+
+export async function fetchTodaysSubmissionUser(username, date) {
   if (!username || !date) {
     console.error("Empty parameters passed", { username, date });
     return [];
@@ -33,13 +65,3 @@ export async function fetchTodaysSubmission(username, date) {
   console.log({ submissionsToday });
   return submissionsToday; // array of submissions
 }
-/* 
-// const customID = generateCustomID(payload);
-function generateCustomID(payload) {
-  const { autoSubmitted, date, user, mealTime } = payload;
-  const userFormatted = user.toLowerCase().trim().replace(/\s+/g, "_"); //\s is for white space character and + is for using only one _ for multiple consicutive whiteSpces
-
-  const customID = `${date}_${userFormatted}_${mealTime}_${autoSubmitted ? "auto_submitted" : "user_submitted"}`;
-  return customID;
-}
- */

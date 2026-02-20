@@ -19,7 +19,7 @@ import { STORAGE_KEYS } from "../../constants/storageKeys";
 /* api */
 import { fetchEmployeeMeals } from "../../services/meals/mealOptions.service";
 import {
-  fetchTodaysSubmission,
+  fetchTodaysSubmissionUser,
   submitMeal,
 } from "../../services/meals/mealSubmission.service";
 import { structureEmployeeMeals } from "../../utils/strucrureMeals.utils";
@@ -75,12 +75,30 @@ function EmployeeDashboard() {
   useEffect(() => {
     if (loadingMeals || loadingDeadlines) return;
     if (!deadlineISO) return;
-    // if countdown.isExpired === false then return else call the autosubmit function
     if (!countdown?.isExpired) return;
-    const current = mealOptionsState[mealTime];
-    if (current?.submitted) return;
+
+    const current = mealOptionsState?.[mealTime] ?? EMPTY_MEAL_STATE;
+
+    if (current.submitted) return;
+    console.group("Auto submit conditons");
+    console.log({
+      countdown,
+      mealTime,
+      loadingDeadlines,
+      loadingMeals,
+      deadlineISO,
+    });
+    console.table(mealOptionsState);
+    console.group();
     autoSubmitOnDeadline();
-  }, [countdown?.isExpired, mealTime, loadingDeadlines, loadingMeals]);
+  }, [
+    countdown?.isExpired,
+    mealTime,
+    loadingDeadlines,
+    loadingMeals,
+    mealOptionsState,
+    deadlineISO,
+  ]);
 
   useEffect(() => {
     const loadMeals = async () => {
@@ -103,7 +121,7 @@ function EmployeeDashboard() {
         // to set submission status on fetched meals.
         const date = new Date().toISOString().split("T")[0];
         try {
-          const todaysSubmissions = await fetchTodaysSubmission(
+          const todaysSubmissions = await fetchTodaysSubmissionUser(
             user?.username,
             date,
           );
