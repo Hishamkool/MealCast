@@ -15,6 +15,7 @@ function MealListPreview({ mealOptions, loading, onUpdateMeal }) {
   const [selectedMeal, setSelectedMeal] = useState(null); //current meal when clicking edit button
   const [editedName, setEditedName] = useState(""); //change food name
   const [editedStats, setEditedStatus] = useState(true); // active or inactive state
+  const [saving, setSaving] = useState(false); // loading state while updating food details
   //function to open edit menu
   const handleOpenEditMenu = (meal) => {
     setShowEditDialog(true);
@@ -25,16 +26,21 @@ function MealListPreview({ mealOptions, loading, onUpdateMeal }) {
     setSelectedMeal(null);
   };
   // function to confirm the edits on the food details
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
+    setSaving(true);
     const updatedMeal = {
       ...selectedMeal,
       foodName: editedName && editedName.trim(),
       active: editedStats && editedStats,
     };
-    console.log("updated food name and status");
-    console.log({ updatedMeal });
-    onUpdateMeal(updatedMeal);
-    handleCloseEditMenu();
+    try {
+      await onUpdateMeal(updatedMeal);
+      handleCloseEditMenu();
+      console.log("updated food name and status");
+      console.log({ updatedMeal });
+    } finally {
+      setSaving(false);
+    }
   };
   //filtering meals based on weekday and only returning if there are items
   const filteredMeals = useMemo(() => {
@@ -192,7 +198,7 @@ function MealListPreview({ mealOptions, loading, onUpdateMeal }) {
               className="accept-btn btn-base"
               onClick={() => handleSaveChanges()}
             >
-              Save Changes
+              {saving ? "Saving..." : "Save Changes"}
             </button>
           </>
         }

@@ -74,6 +74,7 @@ function SetMenu() {
     } catch (error) {
       console.error("Failed to update meals", error);
       showSnackBar("Failed to update meal", "error");
+      throw error;
     }
   };
   // function to loaded added menu options
