@@ -82,8 +82,8 @@ function SetMenuForm({
               value={offset}
               onChange={(e) => setOffset(Number(e.target.value))}
             >
-              <option value="1">1 day before meal</option>
               <option value="0">On the meal day</option>
+              <option value="1">1 day before meal</option>
             </select>
             {/* food name */}
             <label htmlFor="food-name" className="set-menu-label">

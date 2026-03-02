@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../routes/routes";
 import DashboardHeader from "../../components/employee_components/DashboardHeader/DashboardHeader";
-import { fetchTodaysSubmissions } from "../../services/meals/mealSubmission.service";
+import { fetchLiveSubmissions } from "../../services/meals/mealSubmission.service";
 import { structureSubmissions } from "../../utils/structureSubmissions.utils";
 import { BlinkBlur } from "react-loading-indicators";
 function AdminDashboard() {
@@ -19,7 +19,7 @@ function AdminDashboard() {
 
   //live vote tracking
   useEffect(() => {
-    const unsubscribe = fetchTodaysSubmissions((data) => {
+    const unsubscribe = fetchLiveSubmissions((data) => {
       setSubmissions(data);
       setLoadingSubmissions(false);
     });

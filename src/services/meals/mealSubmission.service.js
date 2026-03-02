@@ -17,7 +17,7 @@ export async function submitMeal(payload) {
 }
 
 // live service
-export function fetchTodaysSubmissions(callback) {
+export function fetchLiveSubmissions(callback) {
   const today = new Date().toISOString().split("T")[0];
 
   const q = query(submissionRef, where("date", "==", today));

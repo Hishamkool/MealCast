@@ -22,7 +22,7 @@ function SetMenu() {
   const [showDialogAddItem, setShowDialogAddItem] = useState(false);
   const [mealTime, setMealTime] = useState("breakfast");
   const [cutoffTime, setCutoffTime] = useState(""); //cuttoff time input
-  const [offset, setOffset] = useState(); // this is used to tell if the vote ends by today or the day before itself
+  const [offset, setOffset] = useState(0); // this is used to tell if the vote ends by today or the day before itself
   const [deadlineLoading, setDeadlineLoading] = useState(false);
   const [weekday, setWeekday] = useState("monday"); // to select days of the week to repeat the menu
   /* backend states */
@@ -115,7 +115,11 @@ function SetMenu() {
       return;
     }
     if (!cutoffTime) {
-      showSnackBar("Cutoff time is required", "warning", "warning");
+      showSnackBar("Cutoff time is required", "warning");
+      return;
+    }
+    if (!offset) {
+      showSnackBar("Offset Time not set", "warning");
       return;
     }
     try {
