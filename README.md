@@ -14,6 +14,18 @@ The system enforces strict deadline logic and ensures accurate meal planning thr
 
 ---
 
+## 🏗️ Tech Stack
+
+| Category           | Technologies                          |
+| ------------------ | ------------------------------------- |
+| **Frontend**       | React, React Router, Context API, CSS |
+| **Backend**        | Firebase Realtime Database            |
+| **Real-time**      | Firebase WebSocket listeners          |
+| **Tools**          | Vite, Vercel                          |
+| **Authentication** | Firebase Auth (in progress)           |
+
+---
+
 ## 📸 Screenshots
 
 <p align="center">
